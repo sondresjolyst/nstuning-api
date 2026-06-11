@@ -1,0 +1,62 @@
+name: 🚀 Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  release-please:
+    name: Release Please
+    if: ${{ github.event_name == 'push' }}
+    uses: equinor/ops-actions/.github/workflows/release-please.yml@c1be86e02c64b0d2db5c2dba532b5580cdce168d # v9.38.0
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    with:
+      release_type: simple
+
+  deploy-dev:
+    name: Deploy Dev
+    permissions:
+      contents: read
+      packages: read
+    uses: ./.github/workflows/docker.yml
+    secrets:
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    with:
+      tag: dev
+      environment: dev
+      tag_latest: false
+
+  deploy-prod:
+    name: Deploy Prod
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    permissions:
+      contents: read
+      packages: read
+    uses: ./.github/workflows/docker.yml
+    secrets:
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    with:
+      tag: ${{ needs.release-please.outputs.tag_name }}
+      environment: prod
+      tag_latest: true
+
+  update-chart:
+    name: Update Chart
+    needs: [release-please, deploy-prod]
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    uses: sondresjolyst/tumogroup-charts/.github/workflows/update-chart.yml@main
+    permissions:
+      contents: read
+    secrets:
+      CHARTS_PAT: ${{ secrets.CHARTS_PAT }}
+    with:
+      chart_name: nstuning-api
+      tag: ${{ needs.release-please.outputs.tag_name }}

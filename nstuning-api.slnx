@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="nstuning-api.csproj" />
+  <Project Path="nstuning-api.Tests/nstuning-api.Tests.csproj" />
+</Solution>
