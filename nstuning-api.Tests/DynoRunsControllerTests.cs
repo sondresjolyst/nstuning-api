@@ -58,15 +58,15 @@ public class DynoRunsControllerTests : TestBase
     public async Task Create_GeneratesUniqueSlug()
     {
         await using var db = CreateDbContext();
-        db.DynoRuns.Add(Run("golf-r", true));
+        db.DynoRuns.Add(Run("volvo-242-turbo", true));
         await db.SaveChangesAsync();
 
         var controller = CreateDynoRunsController(db, new FakeReportStorage(), isAdmin: true);
-        var dto = new CreateDynoRunDto { Title = "Golf R", Published = true };
+        var dto = new CreateDynoRunDto { Title = "Volvo 242 Turbo", Published = true };
         var created = Assert.IsType<CreatedAtActionResult>(await controller.Create(dto));
         var body = Assert.IsType<DynoRunDto>(created.Value);
 
-        Assert.Equal("golf-r-2", body.Slug);
+        Assert.Equal("volvo-242-turbo-2", body.Slug);
     }
 
     [Fact]

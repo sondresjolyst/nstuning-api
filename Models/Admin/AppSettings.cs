@@ -17,5 +17,15 @@ namespace nstuning_api.Models.Admin
         public string CompanyLegalName { get; set; } = "Nordmark Service";
 
         public string? HomePageJson { get; set; }
+
+        public string? LogoData { get; set; }
+
+        [MaxLength(50)]
+        public string? LogoContentType { get; set; }
+
+        public string? IconData { get; set; }
+
+        [MaxLength(50)]
+        public string? IconContentType { get; set; }
     }
 }
