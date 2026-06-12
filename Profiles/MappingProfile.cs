@@ -1,6 +1,6 @@
 using Mapster;
-using nstuning_api.Dtos.Auth;
-using nstuning_api.Dtos.DynoRun;
+using nstuning_api.Features.Auth;
+using nstuning_api.Features.DynoRuns;
 using nstuning_api.Models;
 
 namespace nstuning_api.Profiles

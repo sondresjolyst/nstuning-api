@@ -1,0 +1,73 @@
+Using launch settings from Properties\launchSettings.json...
+Building...
+[23:37:52 INF] Starting API.
+[23:37:53 INF] Executed DbCommand (47ms) [Parameters=[@normalizedName='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @normalizedName
+LIMIT 1
+[23:37:53 INF] Executed DbCommand (3ms) [Parameters=[@normalizedName='?'], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @normalizedName
+LIMIT 1
+[23:37:53 INF] Executed DbCommand (14ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."CompanyLegalName", a."CompanyName", a."ContactRecipientEmail", a."HomePageJson", a."IconContentType", a."IconData", a."LogoContentType", a."LogoData"
+FROM "AppSettings" AS a
+WHERE a."Id" = @p
+LIMIT 1
+[23:37:53 INF] No action descriptors found. This may indicate an incorrectly configured application or missing application parts. To learn more, visit https://aka.ms/aspnet/mvc/app-parts
+[23:37:53 INF] User profile is available. Using 'C:\Users\Sondre\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+[23:37:53 INF] Executed DbCommand (12ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT d."Id", d."ContentImages", d."Date", d."DraftDynoRuns", d."PublishedDynoRuns", d."TotalUsers"
+FROM "DailyStatSnapshots" AS d
+ORDER BY d."Date" DESC
+LIMIT 1
+[23:37:53 INF] Now listening on: https://localhost:7297
+[23:37:53 INF] Now listening on: http://localhost:5277
+[23:37:53 INF] Application started. Press Ctrl+C to shut down.
+[23:37:53 INF] Hosting environment: Development
+[23:37:53 INF] Content root path: E:\Sondre C Disk bilde osv\Documents\PlatformIO\Projects\nstuning-api
+[23:38:02 INF] Request starting HTTP/1.1 GET https://localhost:7297/api/dyno-runs - null null
+[23:38:02 INF] Executing endpoint 'HTTP: GET /api/dyno-runs/ => GetAll'
+[23:38:03 INF] Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT d."Id", d."CarMake", d."CarModel", d."CoverImageId", d."CreatedAt", d."Description", d."Engine", d."FuelType", d."PowerAfterHp", d."PowerBeforeHp", d."Published", d."Slug", d."SortOrder", d."Title", d."TorqueAfterNm", d."TorqueBeforeNm", d."Trim", d."UpdatedAt", d."Year", d0."Id", d0."ContentType", d0."CreatedAt", d0."DynoRunId", d0."FileName", d0."SizeBytes", d0."StoredPath", d0."UploadedByUserId"
+FROM "DynoRuns" AS d
+LEFT JOIN "DynoRunReports" AS d0 ON d."Id" = d0."DynoRunId"
+WHERE d."Published"
+ORDER BY d."SortOrder", d."CreatedAt" DESC
+[23:38:03 INF] Setting HTTP status code 200.
+[23:38:03 INF] Writing value of type 'ListSelectIterator`2' as Json.
+[23:38:03 INF] Executed endpoint 'HTTP: GET /api/dyno-runs/ => GetAll'
+[23:38:03 INF] Request finished HTTP/1.1 GET https://localhost:7297/api/dyno-runs - 200 null application/json; charset=utf-8 327.486ms
+[23:38:03 INF] Request starting HTTP/1.1 GET https://localhost:7297/api/content/home - null null
+[23:38:03 INF] Executing endpoint 'HTTP: GET /api/content/home => Get'
+[23:38:03 INF] Executed DbCommand (54ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."CompanyLegalName", a."CompanyName", a."ContactRecipientEmail", a."HomePageJson", a."IconContentType", a."IconData", a."LogoContentType", a."LogoData"
+FROM "AppSettings" AS a
+WHERE a."Id" = @p
+LIMIT 1
+[23:38:03 INF] Write content with HTTP Response ContentType of application/json
+[23:38:03 INF] Executed endpoint 'HTTP: GET /api/content/home => Get'
+[23:38:03 INF] Request finished HTTP/1.1 GET https://localhost:7297/api/content/home - 200 3679 application/json 60.5074ms
+[23:38:03 INF] Request starting HTTP/1.1 GET https://localhost:7297/api/branding - null null
+[23:38:03 INF] Executing endpoint 'HTTP: GET /api/branding => Get'
+[23:38:03 INF] Executed DbCommand (7ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+SELECT a."Id", a."CompanyLegalName", a."CompanyName", a."ContactRecipientEmail", a."HomePageJson", a."IconContentType", a."IconData", a."LogoContentType", a."LogoData"
+FROM "AppSettings" AS a
+WHERE a."Id" = @p
+LIMIT 1
+[23:38:03 INF] Setting HTTP status code 200.
+[23:38:03 INF] Writing value of type 'BrandingResponse' as Json.
+[23:38:03 INF] Executed endpoint 'HTTP: GET /api/branding => Get'
+[23:38:03 INF] Request finished HTTP/1.1 GET https://localhost:7297/api/branding - 200 null application/json; charset=utf-8 22.188ms
+[23:38:03 INF] Request starting HTTP/1.1 GET https://localhost:7297/api/vehicles/tree - null null
+[23:38:03 INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Admin)
+[23:38:03 INF] AuthenticationScheme: Bearer was challenged.
+[23:38:03 INF] Request finished HTTP/1.1 GET https://localhost:7297/api/vehicles/tree - 401 0 null 6.166ms
+[23:38:03 INF] Request starting HTTP/1.1 GET https://localhost:7297/api/users - null null
+[23:38:03 INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Admin)
+[23:38:03 INF] AuthenticationScheme: Bearer was challenged.
+[23:38:03 INF] Request finished HTTP/1.1 GET https://localhost:7297/api/users - 401 0 null 2.0119ms

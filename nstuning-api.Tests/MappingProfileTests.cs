@@ -1,5 +1,5 @@
 using MapsterMapper;
-using nstuning_api.Dtos.DynoRun;
+using nstuning_api.Features.DynoRuns;
 using nstuning_api.Models;
 using Xunit;
 
