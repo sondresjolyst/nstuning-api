@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
 using nstuning_api.Constants;
-using nstuning_api.Controllers;
 using nstuning_api.Models;
 using nstuning_api.Profiles;
 using nstuning_api.Services;
@@ -57,17 +56,6 @@ public abstract class TestBase
             .ConfigureWarnings(w => w.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.InMemoryEventId.TransactionIgnoredWarning))
             .Options);
 
-    protected AuthController CreateAuthController(ApplicationDbContext db) =>
-        new(MockUserManager.Object, MockSignInManager.Object, Configuration, db,
-            MockMapper.Object, NullLogger<AuthController>.Instance);
-
-    protected static DynoRunsController CreateDynoRunsController(
-        ApplicationDbContext db, IReportStorageService storage, bool isAdmin = false)
-    {
-        var controller = new DynoRunsController(db, storage, RealMapper, NullLogger<DynoRunsController>.Instance);
-        controller.ControllerContext = MakeControllerContext(isAdmin: isAdmin);
-        return controller;
-    }
 
     protected static ControllerContext MakeControllerContext(string userId = "user-1", bool isAdmin = false)
     {

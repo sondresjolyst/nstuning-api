@@ -1,4 +1,5 @@
 using AspNetCoreRateLimit;
+using FluentValidation;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using nstuning_api.Constants;
+using nstuning_api.Infrastructure;
 using nstuning_api.Models;
 using nstuning_api.Models.Admin;
 using nstuning_api.Profiles;
@@ -71,6 +73,12 @@ namespace nstuning_api
 
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddSingleton<IReportStorageService, ReportStorageService>();
+            builder.Services.AddSingleton<IImageStorageService, ImageStorageService>();
+            builder.Services.AddHostedService<StatsSnapshotService>();
+
+            builder.Services.AddProblemDetails();
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+            builder.Services.AddValidatorsFromAssemblyContaining<Program>();
             builder.Services.AddEndpointsApiExplorer();
 
             builder.Services.AddAuthentication(options =>
@@ -177,6 +185,19 @@ namespace nstuning_api
             fwd.KnownIPNetworks.Add(new System.Net.IPNetwork(System.Net.IPAddress.Any, 0));
             app.UseForwardedHeaders(fwd);
 
+            app.UseExceptionHandler();
+
+            app.Use(async (context, next) =>
+            {
+                context.Response.OnStarting(() =>
+                {
+                    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+                    context.Response.Headers["X-Frame-Options"] = "DENY";
+                    return Task.CompletedTask;
+                });
+                await next();
+            });
+
             if (!app.Environment.IsDevelopment())
             {
                 app.UseHsts();
@@ -192,6 +213,7 @@ namespace nstuning_api
             app.UseAuthorization();
             app.UseIpRateLimiting();
             app.MapControllers();
+            app.MapEndpoints();
             app.Run();
         }
     }

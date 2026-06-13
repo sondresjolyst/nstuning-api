@@ -48,7 +48,7 @@ public class ReportStorageServiceTests : IDisposable
     [Fact]
     public async Task SaveAsync_NonPdf_Throws()
     {
-        await Assert.ThrowsAsync<InvalidOperationException>(
+        await Assert.ThrowsAsync<AppValidationException>(
             () => _service.SaveAsync(MakeFile("image/png")));
     }
 
@@ -56,7 +56,7 @@ public class ReportStorageServiceTests : IDisposable
     public async Task SaveAsync_OverSize_Throws()
     {
         var big = new byte[2 * 1024 * 1024];
-        await Assert.ThrowsAsync<InvalidOperationException>(
+        await Assert.ThrowsAsync<AppValidationException>(
             () => _service.SaveAsync(MakeFile("application/pdf", big)));
     }
 

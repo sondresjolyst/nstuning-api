@@ -22,6 +22,9 @@ namespace nstuning_api.Models
         [MaxLength(120)]
         public string? CarModel { get; set; }
 
+        [MaxLength(120)]
+        public string? Trim { get; set; }
+
         public int? Year { get; set; }
 
         [MaxLength(160)]
@@ -37,10 +40,10 @@ namespace nstuning_api.Models
 
         public string? Description { get; set; }
 
-        public string? CoverImageData { get; set; }
+        [MaxLength(32)]
+        public string? CoverImageId { get; set; }
 
-        [MaxLength(50)]
-        public string? CoverImageContentType { get; set; }
+        public ContentImage? CoverImage { get; set; }
 
         public bool Published { get; set; }
 

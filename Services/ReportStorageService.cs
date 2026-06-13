@@ -4,64 +4,41 @@ namespace nstuning_api.Services
     {
         public string ReportsPath { get; set; } = "/data/reports";
         public long MaxReportBytes { get; set; } = 52_428_800; // 50 MB
+        public string ImagesPath { get; set; } = "/data/images";
+        public long MaxImageBytes { get; set; } = 5_242_880; // 5 MB
     }
 
-    public class ReportStorageService : IReportStorageService
+    public class ReportStorageService : FileStorageBase, IReportStorageService
     {
         private const string PdfContentType = "application/pdf";
-        private readonly string _root;
-        private readonly long _maxBytes;
         private readonly ILogger<ReportStorageService> _logger;
 
         public ReportStorageService(IConfiguration configuration, ILogger<ReportStorageService> logger)
+            : this(LoadOptions(configuration), logger) { }
+
+        private ReportStorageService(StorageOptions options, ILogger<ReportStorageService> logger)
+            : base(options.ReportsPath, options.MaxReportBytes)
         {
-            var options = configuration.GetSection("Storage").Get<StorageOptions>() ?? new StorageOptions();
-            _root = Path.GetFullPath(options.ReportsPath);
-            _maxBytes = options.MaxReportBytes;
             _logger = logger;
-            Directory.CreateDirectory(_root);
         }
+
+        private static StorageOptions LoadOptions(IConfiguration configuration) =>
+            configuration.GetSection("Storage").Get<StorageOptions>() ?? new StorageOptions();
 
         public async Task<string> SaveAsync(IFormFile file, CancellationToken ct = default)
         {
             if (file.Length == 0)
-                throw new InvalidOperationException("Uploaded file is empty.");
-            if (file.Length > _maxBytes)
-                throw new InvalidOperationException($"File exceeds the {_maxBytes} byte limit.");
+                throw new AppValidationException("Uploaded file is empty.");
+            if (file.Length > MaxBytes)
+                throw new AppValidationException($"File exceeds the {MaxBytes / 1_048_576} MB limit.");
             if (!string.Equals(file.ContentType, PdfContentType, StringComparison.OrdinalIgnoreCase))
-                throw new InvalidOperationException("Only PDF files are accepted.");
+                throw new AppValidationException("Only PDF files are accepted.");
 
             var storedName = $"{Guid.NewGuid():N}.pdf";
-            var fullPath = ResolvePath(storedName);
-
-            await using (var stream = new FileStream(fullPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
-            {
-                await file.CopyToAsync(stream, ct);
-            }
+            await WriteAsync(storedName, file, ct);
 
             _logger.LogInformation("Stored report {StoredName} ({Bytes} bytes)", storedName, file.Length);
             return storedName;
-        }
-
-        public Stream OpenRead(string storedPath) =>
-            new FileStream(ResolvePath(storedPath), FileMode.Open, FileAccess.Read, FileShare.Read);
-
-        public void Delete(string storedPath)
-        {
-            var fullPath = ResolvePath(storedPath);
-            if (File.Exists(fullPath))
-                File.Delete(fullPath);
-        }
-
-        public bool Exists(string storedPath) => File.Exists(ResolvePath(storedPath));
-
-        private string ResolvePath(string storedPath)
-        {
-            var name = Path.GetFileName(storedPath);
-            var fullPath = Path.GetFullPath(Path.Combine(_root, name));
-            if (!fullPath.StartsWith(_root, StringComparison.Ordinal))
-                throw new InvalidOperationException("Invalid stored path.");
-            return fullPath;
         }
     }
 }
