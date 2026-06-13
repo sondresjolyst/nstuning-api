@@ -16,6 +16,9 @@ namespace nstuning_api.Models.Admin
         [MaxLength(200)]
         public string CompanyLegalName { get; set; } = "Nordmark Service";
 
+        [MaxLength(200)]
+        public string Address { get; set; } = "Håbakken 7, 4355 Kvernaland";
+
         public string? HomePageJson { get; set; }
 
         public string? LogoData { get; set; }

@@ -22,10 +22,12 @@ public class SettingsSliceTests : TestBase
         db.AppSettings.Add(new AppSettings());
         await db.SaveChangesAsync();
 
-        var ok = Assert.IsType<Ok<SettingsBody>>(await Settings.Update(new SettingsBody("shop@nstuning.no"), db, default));
+        var ok = Assert.IsType<Ok<SettingsBody>>(await Settings.Update(new SettingsBody("shop@nstuning.no", "New St 1, 0001 Oslo"), db, default));
         Assert.Equal("shop@nstuning.no", ok.Value!.ContactRecipientEmail);
+        Assert.Equal("New St 1, 0001 Oslo", ok.Value!.Address);
 
         var stored = await db.AppSettings.FindAsync(1);
         Assert.Equal("shop@nstuning.no", stored!.ContactRecipientEmail);
+        Assert.Equal("New St 1, 0001 Oslo", stored!.Address);
     }
 }
