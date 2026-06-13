@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.1.0...v1.2.0) (2026-06-13)
+
+
+### Features
+
+* password reset and change password ([#16](https://github.com/sondresjolyst/nstuning-api/issues/16)) ([ec7d80c](https://github.com/sondresjolyst/nstuning-api/commit/ec7d80cceb2d2a0b3ad8604d584deed4f89edbbc))
+
 ## [1.1.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.0.0...v1.1.0) (2026-06-13)
 
 
