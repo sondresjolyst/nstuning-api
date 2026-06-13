@@ -1,27 +1,54 @@
-# nstuning-api
+<p align="center">
+  <img src="https://raw.githubusercontent.com/sondresjolyst/nstuning-app/main/public/icon.svg" alt="NS Tuning" width="120">
+</p>
 
-ASP.NET Core 10 Web API for NS Tuning — auth, dyno-run showcase, PDF report storage, and contact enquiries.
+<p align="center">
+  The backend behind nstuning.no — accounts, dyno-run showcase, report storage, and enquiries.
+</p>
 
-## Stack
+---
 
-- ASP.NET Core 10, PostgreSQL via EF Core (Npgsql)
-- ASP.NET Identity + JWT bearer, roles `Default` / `Admin`
-- Mapster, Serilog, AspNetCoreRateLimit, Brevo email
-- PDF reports stored on an NFS-backed volume (`Storage:ReportsPath`), streamed by the API
+nstuning-api is the API for **NS Tuning** — dyno and performance tuning. It
+handles accounts and auth, stores documented dyno runs and their PDF reports,
+sends contact enquiries by email, and serves the admin-managed site content for
+[nstuning-app](https://github.com/sondresjolyst/nstuning-app).
 
-## Run locally
+## What it does
+
+- **Accounts** — registration, login, JWT + refresh tokens, password reset, and
+  roles (`Default` / `Admin`).
+- **Dyno runs** — public showcase; admins create runs with a PDF report and a
+  cover image, stored on an NFS-backed volume and streamed back by the API.
+- **Contact** — enquiries emailed to NS Tuning via Brevo.
+- **Site content** — admin-managed homepage sections, branding, vehicle catalog
+  (brand → model → variant → engine), and settings.
+
+Built as vertical slices (minimal API endpoints + FluentValidation), with
+PostgreSQL via EF Core.
+
+---
+
+## For developers
+
+<details>
+<summary>Run, configure, and the endpoints</summary>
+
+### Stack
+
+ASP.NET Core 10 · PostgreSQL (EF Core / Npgsql) · ASP.NET Identity + JWT ·
+Mapster · Serilog · AspNetCoreRateLimit · Brevo.
+
+### Run locally
 
 ```bash
 dotnet restore
-dotnet ef database update          # requires local Postgres (see appsettings.Development.json)
-dotnet run
+dotnet ef database update   # needs local Postgres (see appsettings.Development.json)
+dotnet run                  # Swagger at /swagger
 ```
-
-Swagger at `/swagger`.
 
 ### Promote a user to Admin
 
-Register via `POST /api/auth/register`, then grant the Admin role, e.g.:
+Register via `POST /api/auth/register`, then grant the role:
 
 ```sql
 INSERT INTO "AspNetUserRoles" ("UserId", "RoleId")
@@ -30,19 +57,33 @@ FROM "AspNetUsers" u, "AspNetRoles" r
 WHERE u."Email" = 'you@example.com' AND r."Name" = 'Admin';
 ```
 
-## Configuration
+### Configuration
 
-Secrets come from environment variables in production:
+In production, secrets come from environment variables:
 
-- `ConnectionStrings__DefaultConnection`
-- `Jwt__Key`, `Jwt__Issuer`
-- `BrevoSettings__ApiKey`, `BrevoSettings__SenderEmail`, `BrevoSettings__SenderName`
-- `Storage__ReportsPath` (e.g. `/data/reports`, an NFS-backed PVC mount)
+| Variable                                                                  | What it's for                          |
+| ------------------------------------------------------------------------- | -------------------------------------- |
+| `ConnectionStrings__DefaultConnection`                                    | PostgreSQL connection string.          |
+| `Jwt__Key`, `Jwt__Issuer`                                                 | JWT signing key and issuer.            |
+| `BrevoSettings__ApiKey`, `BrevoSettings__SenderEmail`, `BrevoSettings__SenderName` | Brevo email.                  |
+| `Storage__ReportsPath`, `Storage__ImagesPath`                             | NFS-backed mounts for reports/images.  |
 
-## Endpoints
+### Endpoints
 
-- `POST /api/auth/register`, `POST /api/auth/login`, `POST /api/auth/refresh-token`
+- `POST /api/auth/register`, `/login`, `/refresh-token`, `/request-password-reset`, `/reset-password`
 - `GET /api/dyno-runs`, `GET /api/dyno-runs/{slug}`, `GET /api/dyno-runs/{id}/report` (public)
-- `POST/PUT/DELETE /api/dyno-runs` (Admin, multipart with PDF + cover image)
-- `POST /api/contact` (public)
-- `GET/PUT /api/settings` (Admin)
+- `POST/PUT/DELETE /api/dyno-runs` (Admin, multipart: PDF + cover image)
+- `POST /api/contact` (public) · `GET /api/company` (public)
+- `GET/PUT /api/settings`, `/api/branding`, `/api/content/home`, vehicle catalog (Admin)
+
+### Layout
+
+```
+Features/        # one folder per slice (Auth, DynoRuns, Users, Vehicles, …)
+Infrastructure/  # endpoint registration, validation filter
+Services/        # email, file storage
+Models/          # EF Core entities + DbContext
+Migrations/      # EF Core migrations
+```
+
+</details>
