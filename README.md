@@ -68,13 +68,10 @@ In production, secrets come from environment variables:
 | `BrevoSettings__ApiKey`, `BrevoSettings__SenderEmail`, `BrevoSettings__SenderName` | Brevo email.                  |
 | `Storage__ReportsPath`, `Storage__ImagesPath`                             | NFS-backed mounts for reports/images.  |
 
-### Endpoints
+### API reference
 
-- `POST /api/auth/register`, `/login`, `/refresh-token`, `/request-password-reset`, `/reset-password`
-- `GET /api/dyno-runs`, `GET /api/dyno-runs/{slug}`, `GET /api/dyno-runs/{id}/report` (public)
-- `POST/PUT/DELETE /api/dyno-runs` (Admin, multipart: PDF + cover image)
-- `POST /api/contact` (public) · `GET /api/company` (public)
-- `GET/PUT /api/settings`, `/api/branding`, `/api/content/home`, vehicle catalog (Admin)
+Run the app and browse **Swagger at `/swagger`** for the current endpoints,
+schemas, and auth.
 
 ### Layout
 
