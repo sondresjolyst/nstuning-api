@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/sondresjolyst/nstuning-app/main/public/icon.svg" alt="NS Tuning" width="120">
+  <img src="https://raw.githubusercontent.com/sondresjolyst/nstuning-app/main/ns-tuning-black-yellow.png" alt="NS Tuning" width="440">
 </p>
 
 <p align="center">
