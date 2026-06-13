@@ -38,6 +38,22 @@ namespace nstuning_api.Features.Users
             return TypedResults.Ok(ToProfile(user));
         }
 
+        public static async Task<IResult> ChangePassword(string id, ChangePasswordDto dto, HttpContext http, UserManager<User> users)
+        {
+            if (http.User.UserId() != id) return TypedResults.Forbid();
+            var user = await users.FindByIdAsync(id);
+            if (user == null || user.IsDeleted) return TypedResults.NotFound();
+
+            var result = await users.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
+            if (!result.Succeeded)
+                return TypedResults.ValidationProblem(new Dictionary<string, string[]>
+                {
+                    ["NewPassword"] = result.Errors.Select(e => e.Description).ToArray()
+                });
+
+            return TypedResults.Ok(new MessageResponse("Password changed."));
+        }
+
         public static async Task<IResult> Export(string id, HttpContext http, UserManager<User> users)
         {
             if (!CanActOn(http, id)) return TypedResults.Forbid();
@@ -78,6 +94,7 @@ namespace nstuning_api.Features.Users
                 var group = app.MapGroup("/api/users").RequireAuthorization();
                 group.MapGet("{id}/profile", Get);
                 group.MapPut("{id}/profile", Update).WithValidation<UpdateProfileDto>();
+                group.MapPut("{id}/password", ChangePassword).WithValidation<ChangePasswordDto>();
                 group.MapGet("{id}/export", Export);
                 group.MapDelete("{id}/account", Delete);
             }

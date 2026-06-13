@@ -6,6 +6,8 @@ namespace nstuning_api.Features.Users
 
     public record UpdateProfileDto(string FirstName, string LastName);
 
+    public record ChangePasswordDto(string CurrentPassword, string NewPassword);
+
     public record UserExport(UserProfileDto Account, IList<string> Roles, DateTime ExportedAt);
 
     public record AdminUserDto(string Id, string UserName, string Email, string FirstName, string LastName, DateTime CreatedAt, bool IsDeleted, IList<string> Roles);
@@ -24,5 +26,14 @@ namespace nstuning_api.Features.Users
     public class AssignRoleValidator : AbstractValidator<AssignRoleDto>
     {
         public AssignRoleValidator() => RuleFor(x => x.Role).NotEmpty();
+    }
+
+    public class ChangePasswordValidator : AbstractValidator<ChangePasswordDto>
+    {
+        public ChangePasswordValidator()
+        {
+            RuleFor(x => x.CurrentPassword).NotEmpty();
+            RuleFor(x => x.NewPassword).NotEmpty().MinimumLength(6);
+        }
     }
 }

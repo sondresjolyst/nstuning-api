@@ -26,6 +26,10 @@ namespace nstuning_api.Features.Auth
 
     public record TokenResponse(string Token, string RefreshToken);
 
+    public record RequestPasswordResetDto(string Email);
+
+    public record ResetPasswordDto(string Email, string Code, string NewPassword);
+
     public class RegisterValidator : AbstractValidator<RegisterUserDto>
     {
         public RegisterValidator()
@@ -53,6 +57,21 @@ namespace nstuning_api.Features.Auth
         {
             RuleFor(x => x.Token).NotEmpty();
             RuleFor(x => x.RefreshToken).NotEmpty();
+        }
+    }
+
+    public class RequestPasswordResetValidator : AbstractValidator<RequestPasswordResetDto>
+    {
+        public RequestPasswordResetValidator() => RuleFor(x => x.Email).NotEmpty().EmailAddress();
+    }
+
+    public class ResetPasswordValidator : AbstractValidator<ResetPasswordDto>
+    {
+        public ResetPasswordValidator()
+        {
+            RuleFor(x => x.Email).NotEmpty().EmailAddress();
+            RuleFor(x => x.Code).NotEmpty();
+            RuleFor(x => x.NewPassword).NotEmpty().MinimumLength(6);
         }
     }
 }

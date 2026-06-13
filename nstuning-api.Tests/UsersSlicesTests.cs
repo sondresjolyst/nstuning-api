@@ -53,6 +53,33 @@ public class UsersSlicesTests : TestBase
     }
 
     [Fact]
+    public async Task ChangePassword_Self_Succeeds()
+    {
+        var user = MakeUser();
+        MockUserManager.Setup(m => m.FindByIdAsync("user-1")).ReturnsAsync(user);
+        MockUserManager.Setup(m => m.ChangePasswordAsync(user, "old", "newpass1")).ReturnsAsync(IdentityResult.Success);
+
+        Assert.IsType<Ok<MessageResponse>>(await UserProfile.ChangePassword("user-1", new ChangePasswordDto("old", "newpass1"), Http("user-1"), MockUserManager.Object));
+    }
+
+    [Fact]
+    public async Task ChangePassword_OtherUser_Forbidden()
+    {
+        Assert.IsType<ForbidHttpResult>(await UserProfile.ChangePassword("user-2", new ChangePasswordDto("old", "newpass1"), Http("user-1"), MockUserManager.Object));
+    }
+
+    [Fact]
+    public async Task ChangePassword_WrongCurrent_ValidationProblem()
+    {
+        var user = MakeUser();
+        MockUserManager.Setup(m => m.FindByIdAsync("user-1")).ReturnsAsync(user);
+        MockUserManager.Setup(m => m.ChangePasswordAsync(user, "wrong", "newpass1"))
+            .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Incorrect password." }));
+
+        Assert.IsType<ValidationProblem>(await UserProfile.ChangePassword("user-1", new ChangePasswordDto("wrong", "newpass1"), Http("user-1"), MockUserManager.Object));
+    }
+
+    [Fact]
     public async Task DeleteAccount_SoftDeletesAndRevokesTokens()
     {
         await using var db = CreateDbContext();
