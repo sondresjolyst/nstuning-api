@@ -25,10 +25,15 @@ namespace nstuning_api.Features.DynoRuns
                 Year = dto.Year,
                 Engine = dto.Engine,
                 FuelType = dto.FuelType,
-                PowerBeforeHp = dto.PowerBeforeHp,
-                PowerAfterHp = dto.PowerAfterHp,
-                TorqueBeforeNm = dto.TorqueBeforeNm,
-                TorqueAfterNm = dto.TorqueAfterNm,
+                DynoDate = dto.DynoDate,
+                HubPowerBeforeWhp = dto.HubPowerBeforeWhp,
+                HubPowerAfterWhp = dto.HubPowerAfterWhp,
+                HubTorqueBeforeWnm = dto.HubTorqueBeforeWnm,
+                HubTorqueAfterWnm = dto.HubTorqueAfterWnm,
+                EnginePowerBeforeHp = dto.EnginePowerBeforeHp,
+                EnginePowerAfterHp = dto.EnginePowerAfterHp,
+                EngineTorqueBeforeNm = dto.EngineTorqueBeforeNm,
+                EngineTorqueAfterNm = dto.EngineTorqueAfterNm,
                 Description = dto.Description,
                 Published = dto.Published,
                 SortOrder = dto.SortOrder,
@@ -61,10 +66,15 @@ namespace nstuning_api.Features.DynoRuns
             run.Year = dto.Year;
             run.Engine = dto.Engine;
             run.FuelType = dto.FuelType;
-            run.PowerBeforeHp = dto.PowerBeforeHp;
-            run.PowerAfterHp = dto.PowerAfterHp;
-            run.TorqueBeforeNm = dto.TorqueBeforeNm;
-            run.TorqueAfterNm = dto.TorqueAfterNm;
+            run.DynoDate = dto.DynoDate;
+            run.HubPowerBeforeWhp = dto.HubPowerBeforeWhp;
+            run.HubPowerAfterWhp = dto.HubPowerAfterWhp;
+            run.HubTorqueBeforeWnm = dto.HubTorqueBeforeWnm;
+            run.HubTorqueAfterWnm = dto.HubTorqueAfterWnm;
+            run.EnginePowerBeforeHp = dto.EnginePowerBeforeHp;
+            run.EnginePowerAfterHp = dto.EnginePowerAfterHp;
+            run.EngineTorqueBeforeNm = dto.EngineTorqueBeforeNm;
+            run.EngineTorqueAfterNm = dto.EngineTorqueAfterNm;
             run.Description = dto.Description;
             run.Published = dto.Published;
             run.SortOrder = dto.SortOrder;
@@ -108,7 +118,7 @@ namespace nstuning_api.Features.DynoRuns
             report.SizeBytes = file.Length;
             report.StoredPath = storedName;
             report.UploadedByUserId = http.User.UserId();
-            report.CreatedAt = DateTime.UtcNow;
+            // New reports keep the model default (now); re-uploads keep their original date.
             return report;
         }
 
@@ -119,7 +129,7 @@ namespace nstuning_api.Features.DynoRuns
             var (storedPath, contentType, sizeBytes) = await images.SaveAsync(cover, ct);
             var oldImageId = run.CoverImageId;
 
-            run.CoverImage = new ContentImage
+            var newImage = new ContentImage
             {
                 FileName = Path.GetFileName(cover.FileName),
                 ContentType = contentType,
@@ -127,13 +137,20 @@ namespace nstuning_api.Features.DynoRuns
                 StoredPath = storedPath,
                 UploadedByUserId = http.User.UserId()
             };
+            run.CoverImage = newImage;
+
+            var variants = await images.GenerateWebpVariantsAsync(storedPath, ct);
+            foreach (var v in variants)
+                newImage.Variants.Add(new ContentImageVariant { ContentImageId = newImage.Id, Width = v.Width, StoredPath = v.StoredPath, SizeBytes = v.SizeBytes });
 
             if (oldImageId != null)
             {
-                var old = await db.ContentImages.FindAsync([oldImageId], ct);
+                var old = await db.ContentImages.Include(i => i.Variants).FirstOrDefaultAsync(i => i.Id == oldImageId, ct);
                 if (old != null)
                 {
                     images.Delete(old.StoredPath);
+                    foreach (var v in old.Variants)
+                        images.Delete(v.StoredPath);
                     db.ContentImages.Remove(old);
                 }
             }

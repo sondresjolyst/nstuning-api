@@ -15,11 +15,17 @@ namespace nstuning_api.Features.DynoRuns
         public int? Year { get; set; }
         [MaxLength(160)] public string? Engine { get; set; }
         [MaxLength(60)] public string? FuelType { get; set; }
+        public DateOnly? DynoDate { get; set; }
 
-        public int? PowerBeforeHp { get; set; }
-        public int? PowerAfterHp { get; set; }
-        public int? TorqueBeforeNm { get; set; }
-        public int? TorqueAfterNm { get; set; }
+        public int? HubPowerBeforeWhp { get; set; }
+        public int? HubPowerAfterWhp { get; set; }
+        public int? HubTorqueBeforeWnm { get; set; }
+        public int? HubTorqueAfterWnm { get; set; }
+
+        public int? EnginePowerBeforeHp { get; set; }
+        public int? EnginePowerAfterHp { get; set; }
+        public int? EngineTorqueBeforeNm { get; set; }
+        public int? EngineTorqueAfterNm { get; set; }
 
         public string? Description { get; set; }
 
@@ -43,15 +49,21 @@ namespace nstuning_api.Features.DynoRuns
         public int? Year { get; set; }
         public string? Engine { get; set; }
         public string? FuelType { get; set; }
-        public int? PowerBeforeHp { get; set; }
-        public int? PowerAfterHp { get; set; }
-        public int? TorqueBeforeNm { get; set; }
-        public int? TorqueAfterNm { get; set; }
+        public DateOnly? DynoDate { get; set; }
+        public int? HubPowerBeforeWhp { get; set; }
+        public int? HubPowerAfterWhp { get; set; }
+        public int? HubTorqueBeforeWnm { get; set; }
+        public int? HubTorqueAfterWnm { get; set; }
+        public int? EnginePowerBeforeHp { get; set; }
+        public int? EnginePowerAfterHp { get; set; }
+        public int? EngineTorqueBeforeNm { get; set; }
+        public int? EngineTorqueAfterNm { get; set; }
         public string? Description { get; set; }
         public string? CoverImageId { get; set; }
         public bool Published { get; set; }
         public int SortOrder { get; set; }
         public bool HasReport { get; set; }
+        public string? ReportFileName { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

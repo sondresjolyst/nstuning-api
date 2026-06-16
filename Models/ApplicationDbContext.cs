@@ -14,6 +14,7 @@ namespace nstuning_api.Models
         public DbSet<DynoRun> DynoRuns { get; set; }
         public DbSet<DynoRunReport> DynoRunReports { get; set; }
         public DbSet<ContentImage> ContentImages { get; set; }
+        public DbSet<ContentImageVariant> ContentImageVariants { get; set; }
         public DbSet<DailyStatSnapshot> DailyStatSnapshots { get; set; }
         public DbSet<CarBrand> CarBrands { get; set; }
         public DbSet<CarModel> CarModels { get; set; }
@@ -77,6 +78,12 @@ namespace nstuning_api.Models
                 .WithMany()
                 .HasForeignKey(d => d.CoverImageId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<ContentImageVariant>()
+                .HasOne(v => v.ContentImage)
+                .WithMany(i => i.Variants)
+                .HasForeignKey(v => v.ContentImageId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

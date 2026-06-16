@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using nstuning_api.Models;
@@ -11,9 +12,11 @@ using nstuning_api.Models;
 namespace nstuning_api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260616170530_AddCompanyOrgAndVat")]
+    partial class AddCompanyOrgAndVat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -416,35 +419,6 @@ namespace nstuning_api.Migrations
                     b.ToTable("ContentImages");
                 });
 
-            modelBuilder.Entity("nstuning_api.Models.ContentImageVariant", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
-
-                    b.Property<string>("ContentImageId")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
-
-                    b.Property<long>("SizeBytes")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("StoredPath")
-                        .IsRequired()
-                        .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
-
-                    b.Property<int>("Width")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContentImageId");
-
-                    b.ToTable("ContentImageVariants");
-                });
-
             modelBuilder.Entity("nstuning_api.Models.DynoRun", b =>
                 {
                     b.Property<int>("Id")
@@ -470,9 +444,6 @@ namespace nstuning_api.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
-
-                    b.Property<DateOnly?>("DynoDate")
-                        .HasColumnType("date");
 
                     b.Property<string>("Engine")
                         .HasMaxLength(160)
@@ -773,17 +744,6 @@ namespace nstuning_api.Migrations
                     b.Navigation("Model");
                 });
 
-            modelBuilder.Entity("nstuning_api.Models.ContentImageVariant", b =>
-                {
-                    b.HasOne("nstuning_api.Models.ContentImage", "ContentImage")
-                        .WithMany("Variants")
-                        .HasForeignKey("ContentImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ContentImage");
-                });
-
             modelBuilder.Entity("nstuning_api.Models.DynoRun", b =>
                 {
                     b.HasOne("nstuning_api.Models.ContentImage", "CoverImage")
@@ -803,11 +763,6 @@ namespace nstuning_api.Migrations
                         .IsRequired();
 
                     b.Navigation("DynoRun");
-                });
-
-            modelBuilder.Entity("nstuning_api.Models.ContentImage", b =>
-                {
-                    b.Navigation("Variants");
                 });
 
             modelBuilder.Entity("nstuning_api.Models.DynoRun", b =>

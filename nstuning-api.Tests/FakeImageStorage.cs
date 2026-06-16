@@ -9,6 +9,7 @@ public class FakeImageStorage : IImageStorageService
     public readonly Dictionary<string, byte[]> Files = new();
     public int SaveCount { get; private set; }
     public int DeleteCount { get; private set; }
+    public int VariantCount { get; private set; }
 
     public async Task<(string StoredPath, string ContentType, long SizeBytes)> SaveAsync(IFormFile file, CancellationToken ct = default)
     {
@@ -19,6 +20,15 @@ public class FakeImageStorage : IImageStorageService
         Files[name] = bytes;
         SaveCount++;
         return (name, file.ContentType, bytes.Length);
+    }
+
+    public Task<IReadOnlyList<(int Width, string StoredPath, long SizeBytes)>> GenerateWebpVariantsAsync(string originalStoredPath, CancellationToken ct = default)
+    {
+        var name = $"{Guid.NewGuid():N}.webp";
+        Files[name] = [9, 9, 9];
+        VariantCount++;
+        IReadOnlyList<(int Width, string StoredPath, long SizeBytes)> variants = [(800, name, 3)];
+        return Task.FromResult(variants);
     }
 
     public Stream OpenRead(string storedPath) => new MemoryStream(Files[storedPath]);

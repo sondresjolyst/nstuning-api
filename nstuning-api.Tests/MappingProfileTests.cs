@@ -22,6 +22,7 @@ public class MappingProfileTests : TestBase
         var dto = _mapper.Map<DynoRunDto>(run);
 
         Assert.True(dto.HasReport);
+        Assert.Equal("r.pdf", dto.ReportFileName);
         Assert.Equal("volvo-242-turbo", dto.Slug);
     }
 

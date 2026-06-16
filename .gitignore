@@ -4,3 +4,4 @@ _storage/
 *.user
 .vs/
 appsettings.*.local.json
+*.log

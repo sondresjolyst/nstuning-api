@@ -33,6 +33,12 @@ namespace nstuning_api.Services
             await file.CopyToAsync(stream, ct);
         }
 
+        protected async Task WriteBytesAsync(string storedName, byte[] data, CancellationToken ct)
+        {
+            await using var stream = new FileStream(ResolvePath(storedName), FileMode.CreateNew, FileAccess.Write, FileShare.None);
+            await stream.WriteAsync(data, ct);
+        }
+
         protected string ResolvePath(string storedPath)
         {
             var name = Path.GetFileName(storedPath);
