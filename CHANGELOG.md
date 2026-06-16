@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.2.0...v1.3.0) (2026-06-16)
+
+
+### Features
+
+* editable company address ([#18](https://github.com/sondresjolyst/nstuning-api/issues/18)) ([867b493](https://github.com/sondresjolyst/nstuning-api/commit/867b493b66ea4026f0ef9a1ff2ad065013f08782))
+
 ## [1.2.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.1.0...v1.2.0) (2026-06-13)
 
 
