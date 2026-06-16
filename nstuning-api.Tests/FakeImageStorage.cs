@@ -21,6 +21,9 @@ public class FakeImageStorage : IImageStorageService
         return (name, file.ContentType, bytes.Length);
     }
 
+    public Task<IReadOnlyList<(int Width, string StoredPath, long SizeBytes)>> GenerateWebpVariantsAsync(string originalStoredPath, CancellationToken ct = default) =>
+        Task.FromResult<IReadOnlyList<(int Width, string StoredPath, long SizeBytes)>>([]);
+
     public Stream OpenRead(string storedPath) => new MemoryStream(Files[storedPath]);
 
     public void Delete(string storedPath)

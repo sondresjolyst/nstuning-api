@@ -31,7 +31,7 @@ public class ContentImagesSlicesTests : TestBase
         await db.SaveChangesAsync();
         var image = db.ContentImages.First();
 
-        var result = await ContentImages.Get(image.Id, new DefaultHttpContext(), db, storage, default);
+        var result = await ContentImages.Get(image.Id, null, new DefaultHttpContext(), db, storage, default);
         Assert.IsType<FileStreamHttpResult>(result);
     }
 
@@ -39,7 +39,7 @@ public class ContentImagesSlicesTests : TestBase
     public async Task Get_Missing_ReturnsNotFound()
     {
         await using var db = CreateDbContext();
-        var result = await ContentImages.Get("missing", new DefaultHttpContext(), db, new FakeImageStorage(), default);
+        var result = await ContentImages.Get("missing", null, new DefaultHttpContext(), db, new FakeImageStorage(), default);
         Assert.IsType<NotFound>(result);
     }
 
