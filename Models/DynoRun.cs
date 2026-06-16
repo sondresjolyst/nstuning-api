@@ -33,10 +33,17 @@ namespace nstuning_api.Models
         [MaxLength(60)]
         public string? FuelType { get; set; }
 
-        public int? PowerBeforeHp { get; set; }
-        public int? PowerAfterHp { get; set; }
-        public int? TorqueBeforeNm { get; set; }
-        public int? TorqueAfterNm { get; set; }
+        public DateOnly? DynoDate { get; set; }
+
+        public int? HubPowerBeforeWhp { get; set; }
+        public int? HubPowerAfterWhp { get; set; }
+        public int? HubTorqueBeforeWnm { get; set; }
+        public int? HubTorqueAfterWnm { get; set; }
+
+        public int? EnginePowerBeforeHp { get; set; }
+        public int? EnginePowerAfterHp { get; set; }
+        public int? EngineTorqueBeforeNm { get; set; }
+        public int? EngineTorqueAfterNm { get; set; }
 
         public string? Description { get; set; }
 

@@ -17,7 +17,8 @@ namespace nstuning_api.Profiles
                 .Ignore(dest => dest.Id!);
 
             config.NewConfig<DynoRun, DynoRunDto>()
-                .Map(dest => dest.HasReport, src => src.Report != null);
+                .Map(dest => dest.HasReport, src => src.Report != null)
+                .Map(dest => dest.ReportFileName, src => src.Report != null ? src.Report.FileName : null);
         }
     }
 }

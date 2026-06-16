@@ -16,6 +16,11 @@ namespace nstuning_api.Models.Admin
         [MaxLength(200)]
         public string CompanyLegalName { get; set; } = "Nordmark Service";
 
+        [MaxLength(50)]
+        public string OrgNumber { get; set; } = "923 202 374";
+
+        public bool VatRegistered { get; set; } = true;
+
         [MaxLength(200)]
         public string Address { get; set; } = "Håbakken 7, 4355 Kvernaland";
 

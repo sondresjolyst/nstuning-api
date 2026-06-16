@@ -26,5 +26,7 @@ namespace nstuning_api.Models
         public string? UploadedByUserId { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public ICollection<ContentImageVariant> Variants { get; set; } = new List<ContentImageVariant>();
     }
 }
