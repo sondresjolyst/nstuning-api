@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using Microsoft.EntityFrameworkCore;
 using nstuning_api.Constants;
 using nstuning_api.Helpers;
@@ -12,13 +13,12 @@ namespace nstuning_api.Features.ContentImages
     /// <summary>Upload / serve / delete owner images used in site content.</summary>
     public static class ContentImages
     {
-        // Serializes lazy backfill so concurrent requests for an un-converted image don't double-generate.
-        private static readonly SemaphoreSlim BackfillLock = new(1, 1);
+        // Per-image lock so the same image isn't backfilled twice concurrently.
+        private static readonly ConcurrentDictionary<string, SemaphoreSlim> BackfillLocks = new();
 
-        // Content is addressed by id (replacing an image yields a new id), so responses never change.
+        // Responses are content-addressed (a new upload gets a new id), so they never change.
         private const string ImmutableCache = "public, max-age=31536000, immutable";
-        // Used only when we fall back to the original while webp was requested but not ready yet,
-        // so the client re-fetches and picks up the webp once lazy backfill has run.
+        // Short cache for the pre-backfill original fallback, so it can upgrade to webp later.
         private const string ShortCache = "public, max-age=3600";
 
         public static async Task<IResult> Get(string id, int? w, HttpContext http, ApplicationDbContext db, IImageStorageService storage, CancellationToken ct)
@@ -44,12 +44,10 @@ namespace nstuning_api.Features.ContentImages
                     return TypedResults.File(storage.OpenRead(chosen.StoredPath), "image/webp");
                 }
 
-                // Wanted webp but none available (decode failed / empty) — cache briefly so it can upgrade later.
                 http.Response.Headers.CacheControl = ShortCache;
                 return TypedResults.File(storage.OpenRead(image.StoredPath), image.ContentType);
             }
 
-            // Client doesn't accept webp; the original is its final form.
             http.Response.Headers.CacheControl = ImmutableCache;
             return TypedResults.File(storage.OpenRead(image.StoredPath), image.ContentType);
         }
@@ -98,16 +96,22 @@ namespace nstuning_api.Features.ContentImages
 
         private static async Task<List<ContentImageVariant>> EnsureVariantsAsync(string imageId, string storedPath, ApplicationDbContext db, IImageStorageService storage, CancellationToken ct)
         {
-            await BackfillLock.WaitAsync(ct);
+            var gate = BackfillLocks.GetOrAdd(imageId, _ => new SemaphoreSlim(1, 1));
+            await gate.WaitAsync(ct);
             try
             {
                 var existing = await db.ContentImageVariants.Where(v => v.ContentImageId == imageId).ToListAsync(ct);
                 if (existing.Count > 0) return existing;
                 return await GenerateAndSaveVariantsAsync(imageId, storedPath, db, storage, ct);
             }
+            catch (Exception) when (!ct.IsCancellationRequested)
+            {
+                // Best-effort: fall back to the original rather than failing the request.
+                return [];
+            }
             finally
             {
-                BackfillLock.Release();
+                gate.Release();
             }
         }
 

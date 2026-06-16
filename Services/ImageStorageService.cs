@@ -4,12 +4,9 @@ namespace nstuning_api.Services
 {
     public class ImageStorageService : FileStorageBase, IImageStorageService
     {
-        // Target widths for responsive srcset. Only widths smaller than the source are
-        // resized; a full-size variant is always added (capped at MaxWebpWidth).
         private static readonly int[] TargetWidths = [384, 640, 768, 1024, 1366];
         private const int MaxWebpWidth = 2000;
         private const int WebpQuality = 80;
-        // Reject sources larger than this on either side to avoid pixel-bomb decodes.
         private const int MaxSourceDimension = 8000;
 
         private static readonly Dictionary<string, string> Extensions = new(StringComparer.OrdinalIgnoreCase)
@@ -80,7 +77,7 @@ namespace nstuning_api.Services
                     return [];
                 }
 
-                // SKBitmap.Decode ignores EXIF orientation; apply it so phone photos aren't rotated.
+                // SKBitmap.Decode drops EXIF orientation; apply it manually.
                 var original = ApplyOrientation(decoded, codec.EncodedOrigin);
                 try
                 {
@@ -142,7 +139,7 @@ namespace nstuning_api.Services
 
         private static SKBitmap ApplyOrientation(SKBitmap bitmap, SKEncodedOrigin origin)
         {
-            // Handle the common phone-photo rotations. Mirrored origins are rare; left as-is.
+            // Common rotations only; mirrored origins are rare and left as-is.
             switch (origin)
             {
                 case SKEncodedOrigin.BottomRight: // 180°
