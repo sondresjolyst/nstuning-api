@@ -15,14 +15,20 @@ namespace nstuning_api.Features.ContentImages
         // Serializes lazy backfill so concurrent requests for an un-converted image don't double-generate.
         private static readonly SemaphoreSlim BackfillLock = new(1, 1);
 
+        // Content is addressed by id (replacing an image yields a new id), so responses never change.
+        private const string ImmutableCache = "public, max-age=31536000, immutable";
+        // Used only when we fall back to the original while webp was requested but not ready yet,
+        // so the client re-fetches and picks up the webp once lazy backfill has run.
+        private const string ShortCache = "public, max-age=3600";
+
         public static async Task<IResult> Get(string id, int? w, HttpContext http, ApplicationDbContext db, IImageStorageService storage, CancellationToken ct)
         {
             var image = await db.ContentImages.Include(i => i.Variants).FirstOrDefaultAsync(i => i.Id == id, ct);
             if (image == null || !storage.Exists(image.StoredPath))
                 return TypedResults.NotFound();
 
-            http.Response.Headers.CacheControl = "public, max-age=31536000, immutable";
             http.Response.Headers.Vary = "Accept";
+            http.Response.Headers.XContentTypeOptions = "nosniff";
 
             var acceptsWebp = http.Request.Headers.Accept.ToString().Contains("image/webp", StringComparison.OrdinalIgnoreCase);
             if (acceptsWebp)
@@ -33,9 +39,18 @@ namespace nstuning_api.Features.ContentImages
 
                 var chosen = PickVariant(variants, w);
                 if (chosen != null && storage.Exists(chosen.StoredPath))
+                {
+                    http.Response.Headers.CacheControl = ImmutableCache;
                     return TypedResults.File(storage.OpenRead(chosen.StoredPath), "image/webp");
+                }
+
+                // Wanted webp but none available (decode failed / empty) — cache briefly so it can upgrade later.
+                http.Response.Headers.CacheControl = ShortCache;
+                return TypedResults.File(storage.OpenRead(image.StoredPath), image.ContentType);
             }
 
+            // Client doesn't accept webp; the original is its final form.
+            http.Response.Headers.CacheControl = ImmutableCache;
             return TypedResults.File(storage.OpenRead(image.StoredPath), image.ContentType);
         }
 
@@ -99,9 +114,7 @@ namespace nstuning_api.Features.ContentImages
         private static async Task<List<ContentImageVariant>> GenerateAndSaveVariantsAsync(string imageId, string storedPath, ApplicationDbContext db, IImageStorageService storage, CancellationToken ct)
         {
             var generated = await storage.GenerateWebpVariantsAsync(storedPath, ct);
-            var rows = generated
-                .Select(g => new ContentImageVariant { ContentImageId = imageId, Width = g.Width, StoredPath = g.StoredPath, SizeBytes = g.SizeBytes })
-                .ToList();
+            var rows = generated.Select(g => ContentImageVariant.From(imageId, g)).ToList();
             if (rows.Count > 0)
             {
                 db.ContentImageVariants.AddRange(rows);

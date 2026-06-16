@@ -22,5 +22,8 @@ namespace nstuning_api.Models
         [Required]
         [MaxLength(400)]
         public required string StoredPath { get; set; }
+
+        public static ContentImageVariant From(string contentImageId, (int Width, string StoredPath, long SizeBytes) v) =>
+            new() { ContentImageId = contentImageId, Width = v.Width, StoredPath = v.StoredPath, SizeBytes = v.SizeBytes };
     }
 }
