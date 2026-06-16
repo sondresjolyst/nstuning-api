@@ -141,7 +141,7 @@ namespace nstuning_api.Features.DynoRuns
 
             var variants = await images.GenerateWebpVariantsAsync(storedPath, ct);
             foreach (var v in variants)
-                newImage.Variants.Add(new ContentImageVariant { ContentImageId = newImage.Id, Width = v.Width, StoredPath = v.StoredPath, SizeBytes = v.SizeBytes });
+                newImage.Variants.Add(ContentImageVariant.From(newImage.Id, v));
 
             if (oldImageId != null)
             {
