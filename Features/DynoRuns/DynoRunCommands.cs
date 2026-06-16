@@ -137,6 +137,9 @@ namespace nstuning_api.Features.DynoRuns
                 StoredPath = storedPath,
                 UploadedByUserId = http.User.UserId()
             };
+            // Add explicitly: with a client-set key EF would otherwise track the
+            // nav-attached entity as Unchanged and skip the insert.
+            db.ContentImages.Add(newImage);
             run.CoverImage = newImage;
 
             var variants = await images.GenerateWebpVariantsAsync(storedPath, ct);

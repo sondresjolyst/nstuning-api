@@ -74,6 +74,24 @@ public class DynoRunSlicesTests : TestBase
     }
 
     [Fact]
+    public async Task Update_WithCover_PersistsImageAndVariants()
+    {
+        await using var db = CreateDbContext();
+        var imgStorage = new FakeImageStorage();
+        var created = Assert.IsType<Created<DynoRunDto>>(
+            await DynoRunCommands.Create(new CreateDynoRunDto { Title = "Saab" }, Http(true), db, new FakeReportStorage(), imgStorage, RealMapper, default));
+
+        var updated = Assert.IsType<Ok<DynoRunDto>>(
+            await DynoRunCommands.Update(created.Value!.Id, new UpdateDynoRunDto { Title = "Saab", CoverImage = FakeImageStorage.MakeImage() },
+                Http(true), db, new FakeReportStorage(), imgStorage, RealMapper, default));
+
+        Assert.NotNull(updated.Value!.CoverImageId);
+        var image = Assert.Single(db.ContentImages);
+        Assert.Equal(updated.Value!.CoverImageId, image.Id);
+        Assert.NotEmpty(db.ContentImageVariants);
+    }
+
+    [Fact]
     public async Task Create_PersistsHubEngineFiguresAndDynoDate()
     {
         await using var db = CreateDbContext();
