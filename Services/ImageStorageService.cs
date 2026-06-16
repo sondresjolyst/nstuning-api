@@ -70,7 +70,13 @@ namespace nstuning_api.Services
                     return [];
                 }
 
-                using var decoded = SKBitmap.Decode(codec);
+                // Decode downsampled (but not below the largest target width) to cap memory.
+                var targetDecodeWidth = Math.Min(info.Width, MaxWebpWidth);
+                var sample = 1;
+                while (info.Width / (sample * 2) >= targetDecodeWidth) sample *= 2;
+                var decodeInfo = new SKImageInfo(info.Width / sample, info.Height / sample);
+
+                using var decoded = SKBitmap.Decode(codec, decodeInfo);
                 if (decoded == null)
                 {
                     _logger.LogWarning("Could not decode image {StoredPath} for webp generation", originalStoredPath);
