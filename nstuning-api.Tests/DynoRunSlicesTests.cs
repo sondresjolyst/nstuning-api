@@ -74,6 +74,49 @@ public class DynoRunSlicesTests : TestBase
     }
 
     [Fact]
+    public async Task Create_PersistsHubEngineFiguresAndDynoDate()
+    {
+        await using var db = CreateDbContext();
+        var dto = new CreateDynoRunDto
+        {
+            Title = "Saab 99",
+            DynoDate = new DateOnly(2026, 6, 12),
+            HubPowerAfterWhp = 265,
+            HubTorqueAfterWnm = 417,
+            EnginePowerAfterHp = 315,
+            EngineTorqueAfterNm = 494,
+        };
+
+        var created = Assert.IsType<Created<DynoRunDto>>(
+            await DynoRunCommands.Create(dto, Http(true), db, new FakeReportStorage(), new FakeImageStorage(), RealMapper, default));
+
+        Assert.Equal(new DateOnly(2026, 6, 12), created.Value!.DynoDate);
+        Assert.Equal(265, created.Value!.HubPowerAfterWhp);
+        Assert.Equal(417, created.Value!.HubTorqueAfterWnm);
+        Assert.Equal(315, created.Value!.EnginePowerAfterHp);
+        Assert.Equal(494, created.Value!.EngineTorqueAfterNm);
+    }
+
+    [Fact]
+    public async Task Update_ReuploadingReport_KeepsOriginalCreatedAt()
+    {
+        await using var db = CreateDbContext();
+        var storage = new FakeReportStorage();
+
+        var created = Assert.IsType<Created<DynoRunDto>>(
+            await DynoRunCommands.Create(new CreateDynoRunDto { Title = "M5", Report = FakeReportStorage.MakePdf() }, Http(true), db, storage, new FakeImageStorage(), RealMapper, default));
+
+        var report = db.DynoRunReports.First();
+        var originalDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        report.CreatedAt = originalDate;
+        await db.SaveChangesAsync();
+
+        await DynoRunCommands.Update(created.Value!.Id, new UpdateDynoRunDto { Title = "M5", Report = FakeReportStorage.MakePdf() }, Http(true), db, storage, new FakeImageStorage(), RealMapper, default);
+
+        Assert.Equal(originalDate, db.DynoRunReports.First().CreatedAt);
+    }
+
+    [Fact]
     public async Task Delete_RemovesRunAndReportFile()
     {
         await using var db = CreateDbContext();

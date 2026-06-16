@@ -26,4 +26,16 @@ public class CompanyInfoTests : TestBase
         var ok = Assert.IsType<Ok<CompanyInfoResponse>>(await CompanyInfo.Get(db, default));
         Assert.Equal("New St 1, 0001 Oslo", ok.Value!.Address);
     }
+
+    [Fact]
+    public async Task Get_ExposesOrgNumberAndVatStatus()
+    {
+        await using var db = CreateDbContext();
+        db.AppSettings.Add(new AppSettings { OrgNumber = "111 222 333", VatRegistered = true });
+        await db.SaveChangesAsync();
+
+        var ok = Assert.IsType<Ok<CompanyInfoResponse>>(await CompanyInfo.Get(db, default));
+        Assert.Equal("111 222 333", ok.Value!.OrgNumber);
+        Assert.True(ok.Value!.VatRegistered);
+    }
 }
