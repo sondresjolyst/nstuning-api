@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.4.0...v1.5.0) (2026-06-17)
+
+
+### Features
+
+* decouple engine catalog from the vehicle tree ([#34](https://github.com/sondresjolyst/nstuning-api/issues/34)) ([a158120](https://github.com/sondresjolyst/nstuning-api/commit/a158120fbf821c904fdd03c8805957ecb464d96a))
+
 ## [1.4.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.3.0...v1.4.0) (2026-06-16)
 
 
