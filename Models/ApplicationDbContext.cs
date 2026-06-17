@@ -20,6 +20,7 @@ namespace nstuning_api.Models
         public DbSet<CarModel> CarModels { get; set; }
         public DbSet<CarVariant> CarVariants { get; set; }
         public DbSet<CarEngine> CarEngines { get; set; }
+        public DbSet<CarModelEngine> CarModelEngines { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,13 +55,28 @@ namespace nstuning_api.Models
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<CarEngine>()
-                .HasIndex(e => new { e.VariantId, e.Name })
+                .HasIndex(e => new { e.BrandId, e.Name })
                 .IsUnique();
 
             modelBuilder.Entity<CarEngine>()
-                .HasOne(e => e.Variant)
+                .HasOne(e => e.Brand)
                 .WithMany()
-                .HasForeignKey(e => e.VariantId)
+                .HasForeignKey(e => e.BrandId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<CarModelEngine>()
+                .HasKey(me => new { me.ModelId, me.EngineId });
+
+            modelBuilder.Entity<CarModelEngine>()
+                .HasOne(me => me.Model)
+                .WithMany()
+                .HasForeignKey(me => me.ModelId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CarModelEngine>()
+                .HasOne(me => me.Engine)
+                .WithMany()
+                .HasForeignKey(me => me.EngineId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<DynoRun>()
