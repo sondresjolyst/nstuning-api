@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.4.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.3.0...v1.4.0) (2026-06-16)
+
+
+### Features
+
+* dyno hub/engine figures + dyno date, company settings, webp variants ([#29](https://github.com/sondresjolyst/nstuning-api/issues/29)) ([780ceb9](https://github.com/sondresjolyst/nstuning-api/commit/780ceb9aaa7e4d927b2d6a5a1017280a16926b90))
+
+
+### Bug Fixes
+
+* harden image pipeline (EXIF, dimension guard, nosniff, cache) ([#31](https://github.com/sondresjolyst/nstuning-api/issues/31)) ([270e477](https://github.com/sondresjolyst/nstuning-api/commit/270e47790483d71f654b8c9f68b1ad6ae69d38bd))
+* persist new cover image on update  ([#33](https://github.com/sondresjolyst/nstuning-api/issues/33)) ([535bae3](https://github.com/sondresjolyst/nstuning-api/commit/535bae3fd1dcda015969d5ea69f13c3493c0f0da))
+
+
+### Performance Improvements
+
+* downsample image decode to bound webp memory (fixes OOMKill) ([#32](https://github.com/sondresjolyst/nstuning-api/issues/32)) ([c213d13](https://github.com/sondresjolyst/nstuning-api/commit/c213d138da81ea1ea0e01d720b99073fb14724fa))
+
 ## [1.3.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.2.0...v1.3.0) (2026-06-16)
 
 
