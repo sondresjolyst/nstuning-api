@@ -61,49 +61,99 @@ public class VehicleSlicesTests : TestBase
     }
 
     [Fact]
-    public async Task CreateEngine_AddsToVariant()
+    public async Task SetFamily_SetsAndClears()
     {
         await using var db = CreateDbContext();
-        var (_, _, variantId) = await SeedChainAsync(db);
-        Assert.IsType<Ok<VehicleItem>>(await Engines.Create(variantId, new VehicleName("2.0"), db, default));
-        Assert.Equal(variantId, Assert.Single(db.CarEngines).VariantId);
+        var (_, modelId, _) = await SeedChainAsync(db);
+
+        Assert.IsType<Ok<VehicleItem>>(await CarModels.SetFamily(modelId, new ModelFamily(" 240 series "), db, default));
+        Assert.Equal("240 series", db.CarModels.Single(m => m.Id == modelId).Family);
+
+        await CarModels.SetFamily(modelId, new ModelFamily(""), db, default);
+        Assert.Null(db.CarModels.Single(m => m.Id == modelId).Family);
     }
 
     [Fact]
-    public async Task CreateEngine_UnknownVariant_NotFound()
+    public async Task CreateEngine_AddsToCatalogWithBrand()
     {
         await using var db = CreateDbContext();
-        Assert.IsType<NotFound>(await Engines.Create(999, new VehicleName("2.0"), db, default));
+        var (brandId, _, _) = await SeedChainAsync(db);
+        Assert.IsType<Ok<EngineCatalogItem>>(await Engines.Create(new EngineInput("2.0", brandId), db, default));
+        var engine = Assert.Single(db.CarEngines);
+        Assert.Equal(brandId, engine.BrandId);
+        Assert.Equal("2.0", engine.Name);
     }
 
     [Fact]
-    public async Task DeleteBrand_CascadesWholeTree()
+    public async Task CreateEngine_UnknownBrand_NotFound()
     {
         await using var db = CreateDbContext();
-        var (brandId, _, variantId) = await SeedChainAsync(db);
-        db.CarEngines.Add(new CarEngine { VariantId = variantId, Name = "2.0" });
-        await db.SaveChangesAsync();
+        Assert.IsType<NotFound>(await Engines.Create(new EngineInput("2.0", 999), db, default));
+    }
+
+    [Fact]
+    public async Task CreateEngine_GlobalNoBrand_Allowed()
+    {
+        await using var db = CreateDbContext();
+        Assert.IsType<Ok<EngineCatalogItem>>(await Engines.Create(new EngineInput("2JZ-GTE", null), db, default));
+        Assert.Null(Assert.Single(db.CarEngines).BrandId);
+    }
+
+    [Fact]
+    public async Task LinkAndUnlinkEngine_ManagesFitment()
+    {
+        await using var db = CreateDbContext();
+        var (brandId, modelId, _) = await SeedChainAsync(db);
+        await Engines.Create(new EngineInput("2.0", brandId), db, default);
+        var engineId = db.CarEngines.Single().Id;
+
+        Assert.IsType<NoContent>(await Engines.Link(modelId, engineId, db, default));
+        Assert.Single(db.CarModelEngines);
+        // idempotent
+        await Engines.Link(modelId, engineId, db, default);
+        Assert.Single(db.CarModelEngines);
+
+        Assert.IsType<NoContent>(await Engines.Unlink(modelId, engineId, db, default));
+        Assert.Empty(db.CarModelEngines);
+    }
+
+    [Fact]
+    public async Task LinkEngine_UnknownModel_NotFound()
+    {
+        await using var db = CreateDbContext();
+        var (brandId, _, _) = await SeedChainAsync(db);
+        await Engines.Create(new EngineInput("2.0", brandId), db, default);
+        var engineId = db.CarEngines.Single().Id;
+        Assert.IsType<NotFound>(await Engines.Link(999, engineId, db, default));
+    }
+
+    [Fact]
+    public async Task DeleteBrand_CascadesModelsAndVariants()
+    {
+        await using var db = CreateDbContext();
+        var (brandId, _, _) = await SeedChainAsync(db);
 
         Assert.IsType<NoContent>(await Brands.Delete(brandId, db, default));
         Assert.Empty(db.CarBrands);
         Assert.Empty(db.CarModels);
         Assert.Empty(db.CarVariants);
-        Assert.Empty(db.CarEngines);
     }
 
     [Fact]
-    public async Task GetTree_ReturnsFourLevels()
+    public async Task GetTree_ReturnsBrandsVariantsAndEngineCatalog()
     {
         await using var db = CreateDbContext();
-        var (_, _, variantId) = await SeedChainAsync(db);
-        db.CarEngines.Add(new CarEngine { VariantId = variantId, Name = "2.0" });
-        await db.SaveChangesAsync();
+        var (brandId, modelId, _) = await SeedChainAsync(db);
+        await Engines.Create(new EngineInput("2.0", brandId), db, default);
+        var engineId = db.CarEngines.Single().Id;
+        await Engines.Link(modelId, engineId, db, default);
 
         var result = await GetVehicleTree.Handle(db, default);
-        var ok = Assert.IsType<Ok<List<BrandTree>>>(result);
-        var brand = Assert.Single(ok.Value!);
+        var ok = Assert.IsType<Ok<VehicleTreeResponse>>(result);
+        var brand = Assert.Single(ok.Value!.Brands);
         var model = Assert.Single(brand.Models);
-        var variant = Assert.Single(model.Variants);
-        Assert.Equal("2.0", Assert.Single(variant.Engines).Name);
+        Assert.Equal("EMS", Assert.Single(model.Variants).Name);
+        Assert.Equal(engineId, Assert.Single(model.EngineIds));
+        Assert.Equal("2.0", Assert.Single(ok.Value!.Engines).Name);
     }
 }

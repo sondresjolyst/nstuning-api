@@ -22,6 +22,17 @@ namespace nstuning_api.Features.Vehicles
             return TypedResults.Ok(new VehicleItem(model.Id, model.Name));
         }
 
+        public static async Task<IResult> SetFamily(int id, ModelFamily body, ApplicationDbContext db, CancellationToken ct)
+        {
+            var model = await db.CarModels.FindAsync([id], ct);
+            if (model == null) return TypedResults.NotFound();
+
+            var family = body.Family?.Trim();
+            model.Family = string.IsNullOrEmpty(family) ? null : family;
+            await db.SaveChangesAsync(ct);
+            return TypedResults.Ok(new VehicleItem(model.Id, model.Name));
+        }
+
         public static async Task<IResult> Rename(int id, VehicleName body, ApplicationDbContext db, CancellationToken ct)
         {
             var name = body.Name.Trim();
@@ -51,6 +62,7 @@ namespace nstuning_api.Features.Vehicles
                 var group = app.MapGroup("/api/vehicles").RequireAuthorization(Policies.Admin);
                 group.MapPost("brands/{brandId:int}/models", Create).WithValidation<VehicleName>();
                 group.MapPut("models/{id:int}", Rename).WithValidation<VehicleName>();
+                group.MapPut("models/{id:int}/family", SetFamily).WithValidation<ModelFamily>();
                 group.MapDelete("models/{id:int}", Delete);
             }
         }

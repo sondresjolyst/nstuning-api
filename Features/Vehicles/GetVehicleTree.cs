@@ -5,7 +5,7 @@ using nstuning_api.Models;
 
 namespace nstuning_api.Features.Vehicles
 {
-    /// <summary>GET the full brand → model → variant → engine tree.</summary>
+    /// <summary>GET the brand → model → variant tree plus the flat engine catalog and factory-fitment links.</summary>
     public static class GetVehicleTree
     {
         public static async Task<IResult> Handle(ApplicationDbContext db, CancellationToken ct)
@@ -14,16 +14,19 @@ namespace nstuning_api.Features.Vehicles
             var models = await db.CarModels.OrderBy(m => m.Name).ToListAsync(ct);
             var variants = await db.CarVariants.OrderBy(v => v.Name).ToListAsync(ct);
             var engines = await db.CarEngines.OrderBy(e => e.Name).ToListAsync(ct);
+            var fitments = await db.CarModelEngines.ToListAsync(ct);
 
-            var tree = brands.Select(b => new BrandTree(b.Id, b.Name,
-                models.Where(m => m.BrandId == b.Id).Select(m => new ModelTree(m.Id, m.Name,
-                    variants.Where(v => v.ModelId == m.Id).Select(v => new VariantTree(v.Id, v.Name,
-                        engines.Where(e => e.VariantId == v.Id).Select(e => new VehicleItem(e.Id, e.Name)).ToList()
-                    )).ToList()
+            var brandTree = brands.Select(b => new BrandTree(b.Id, b.Name,
+                models.Where(m => m.BrandId == b.Id).Select(m => new ModelTree(
+                    m.Id, m.Name, m.Family,
+                    variants.Where(v => v.ModelId == m.Id).Select(v => new VariantItem(v.Id, v.Name)).ToList(),
+                    fitments.Where(f => f.ModelId == m.Id).Select(f => f.EngineId).ToList()
                 )).ToList()
             )).ToList();
 
-            return TypedResults.Ok(tree);
+            var catalog = engines.Select(e => new EngineCatalogItem(e.Id, e.Name, e.BrandId)).ToList();
+
+            return TypedResults.Ok(new VehicleTreeResponse(brandTree, catalog));
         }
 
         public class Endpoint : IEndpoint

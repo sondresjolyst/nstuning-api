@@ -14,6 +14,10 @@ namespace nstuning_api.Models
         [MaxLength(120)]
         public required string Name { get; set; }
 
+        /// <summary>Optional grouping folder for the picker (e.g. "240 series"). Never part of the display label.</summary>
+        [MaxLength(80)]
+        public string? Family { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
