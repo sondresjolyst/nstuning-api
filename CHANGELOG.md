@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.5.1](https://github.com/sondresjolyst/nstuning-api/compare/v1.5.0...v1.5.1) (2026-06-22)
+
+
+### Dependencies
+
+* bump `Mapster` and `Mapster.DependencyInjection` from 10.0.7 to 10.0.8 ([#37](https://github.com/sondresjolyst/nstuning-api/issues/37)) ([8a39213](https://github.com/sondresjolyst/nstuning-api/commit/8a392139878f80a640de7cde61d62c358dc8250b))
+* bump `Microsoft.AspNetCore.Authentication.JwtBearer` from 10.0.8 to 10.0.9 ([#38](https://github.com/sondresjolyst/nstuning-api/issues/38)) ([eebf1ea](https://github.com/sondresjolyst/nstuning-api/commit/eebf1ea621befd76462474647d8df27d3303c9db))
+* bump `Microsoft.AspNetCore.Identity.EntityFrameworkCore` from 10.0.8 to 10.0.9 ([#39](https://github.com/sondresjolyst/nstuning-api/issues/39)) ([6af6c87](https://github.com/sondresjolyst/nstuning-api/commit/6af6c8702aeae0304d86fca5671f225c5ff77cce))
+* bump `Microsoft.AspNetCore.OpenApi` from 10.0.8 to 10.0.9 ([#40](https://github.com/sondresjolyst/nstuning-api/issues/40)) ([b097caa](https://github.com/sondresjolyst/nstuning-api/commit/b097caac91dd3f6e49fd7331024c71c05fbf8b6e))
+* bump `Microsoft.EntityFrameworkCore` from 10.0.8 to 10.0.9 ([#41](https://github.com/sondresjolyst/nstuning-api/issues/41)) ([78f87bc](https://github.com/sondresjolyst/nstuning-api/commit/78f87bcca32b74eafd16ed23e89350a5c10ed48f))
+
 ## [1.5.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.4.0...v1.5.0) (2026-06-17)
 
 
