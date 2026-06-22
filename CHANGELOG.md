@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.5.1...v1.6.0) (2026-06-22)
+
+
+### Features
+
+* **dyno-runs:** displacement & absolute-pressure fields ([#43](https://github.com/sondresjolyst/nstuning-api/issues/43)) ([428f2dd](https://github.com/sondresjolyst/nstuning-api/commit/428f2ddef43c568b288569ef51209c17e0552773))
+
 ## [1.5.1](https://github.com/sondresjolyst/nstuning-api/compare/v1.5.0...v1.5.1) (2026-06-22)
 
 
