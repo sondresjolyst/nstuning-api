@@ -17,6 +17,9 @@ namespace nstuning_api.Features.DynoRuns
         [MaxLength(60)] public string? FuelType { get; set; }
         public DateOnly? DynoDate { get; set; }
 
+        public int? DisplacementCc { get; set; }
+        public int? AbsolutePressureKpa { get; set; }
+
         public int? HubPowerBeforeWhp { get; set; }
         public int? HubPowerAfterWhp { get; set; }
         public int? HubTorqueBeforeWnm { get; set; }
@@ -50,6 +53,8 @@ namespace nstuning_api.Features.DynoRuns
         public string? Engine { get; set; }
         public string? FuelType { get; set; }
         public DateOnly? DynoDate { get; set; }
+        public int? DisplacementCc { get; set; }
+        public int? AbsolutePressureKpa { get; set; }
         public int? HubPowerBeforeWhp { get; set; }
         public int? HubPowerAfterWhp { get; set; }
         public int? HubTorqueBeforeWnm { get; set; }

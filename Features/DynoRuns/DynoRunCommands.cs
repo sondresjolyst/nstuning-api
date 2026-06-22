@@ -26,6 +26,8 @@ namespace nstuning_api.Features.DynoRuns
                 Engine = dto.Engine,
                 FuelType = dto.FuelType,
                 DynoDate = dto.DynoDate,
+                DisplacementCc = dto.DisplacementCc,
+                AbsolutePressureKpa = dto.AbsolutePressureKpa,
                 HubPowerBeforeWhp = dto.HubPowerBeforeWhp,
                 HubPowerAfterWhp = dto.HubPowerAfterWhp,
                 HubTorqueBeforeWnm = dto.HubTorqueBeforeWnm,
@@ -67,6 +69,8 @@ namespace nstuning_api.Features.DynoRuns
             run.Engine = dto.Engine;
             run.FuelType = dto.FuelType;
             run.DynoDate = dto.DynoDate;
+            run.DisplacementCc = dto.DisplacementCc;
+            run.AbsolutePressureKpa = dto.AbsolutePressureKpa;
             run.HubPowerBeforeWhp = dto.HubPowerBeforeWhp;
             run.HubPowerAfterWhp = dto.HubPowerAfterWhp;
             run.HubTorqueBeforeWnm = dto.HubTorqueBeforeWnm;
