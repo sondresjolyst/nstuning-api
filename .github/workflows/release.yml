@@ -12,13 +12,11 @@ jobs:
   release-please:
     name: Release Please
     if: ${{ github.event_name == 'push' }}
-    uses: equinor/ops-actions/.github/workflows/release-please.yml@792c28d178029e9d2b5ae027e3acbe18da89e9ed # v9.38.2
+    uses: equinor/ops-actions/.github/workflows/release-please-manifest.yml@792c28d178029e9d2b5ae027e3acbe18da89e9ed # v9.38.2
     permissions:
       contents: write
       pull-requests: write
       issues: write
-    with:
-      release_type: simple
 
   deploy-dev:
     name: Deploy Dev
@@ -33,10 +31,28 @@ jobs:
       environment: dev
       tag_latest: false
 
+  get-tag:
+    name: Get Release Tag
+    needs: release-please
+    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      tag: ${{ steps.get-tag.outputs.tag }}
+    steps:
+      - name: Get release tag
+        id: get-tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh api repos/${{ github.repository }}/releases/latest --jq '.tag_name')
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
   deploy-prod:
     name: Deploy Prod
-    needs: release-please
-    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    needs: [release-please, get-tag]
+    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
     permissions:
       contents: read
       packages: read
@@ -44,14 +60,14 @@ jobs:
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     with:
-      tag: ${{ needs.release-please.outputs.tag_name }}
+      tag: ${{ needs.get-tag.outputs.tag }}
       environment: prod
       tag_latest: true
 
   update-chart:
     name: Update Chart
-    needs: [release-please, deploy-prod]
-    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    needs: [release-please, deploy-prod, get-tag]
+    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
     uses: sondresjolyst/tumogroup-charts/.github/workflows/update-chart.yml@main
     permissions:
       contents: read
@@ -59,4 +75,4 @@ jobs:
       CHARTS_PAT: ${{ secrets.CHARTS_PAT }}
     with:
       chart_name: nstuning-api
-      tag: ${{ needs.release-please.outputs.tag_name }}
+      tag: ${{ needs.get-tag.outputs.tag }}
