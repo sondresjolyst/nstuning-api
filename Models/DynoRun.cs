@@ -35,6 +35,12 @@ namespace nstuning_api.Models
 
         public DateOnly? DynoDate { get; set; }
 
+        /// <summary>Engine displacement in cc; used for power/torque per litre.</summary>
+        public int? DisplacementCc { get; set; }
+
+        /// <summary>Absolute manifold pressure in kPa (NA ≈ 100); normalises specific output to 100 kPa.</summary>
+        public int? AbsolutePressureKpa { get; set; }
+
         public int? HubPowerBeforeWhp { get; set; }
         public int? HubPowerAfterWhp { get; set; }
         public int? HubTorqueBeforeWnm { get; set; }
