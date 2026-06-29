@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.6.1](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.0...v1.6.1) (2026-06-29)
+
+
+### Dependencies
+
+* bump `actions/checkout` from 6.0.3 to 7.0.0 ([#45](https://github.com/sondresjolyst/nstuning-api/issues/45)) ([8f4cf47](https://github.com/sondresjolyst/nstuning-api/commit/8f4cf47ab668551370605059f43e9eca9e1856b0))
+* bump `equinor/ops-actions/.github/workflows/docker.yml` from 9.38.2 to 9.38.3 ([#47](https://github.com/sondresjolyst/nstuning-api/issues/47)) ([3350b9e](https://github.com/sondresjolyst/nstuning-api/commit/3350b9e43aff4bac0e28d62436740402045a3d57))
+* bump `equinor/ops-actions/.github/workflows/release-please-manifest.yml` from 9.38.2 to 9.38.3 ([#46](https://github.com/sondresjolyst/nstuning-api/issues/46)) ([fa4fba5](https://github.com/sondresjolyst/nstuning-api/commit/fa4fba5d1f29bb07a97965949d3fa45a988170d9))
+* Bump `Microsoft.EntityFrameworkCore.Design` and `Microsoft.EntityFrameworkCore.Tools` from 10.0.8 to 10.0.9 ([#50](https://github.com/sondresjolyst/nstuning-api/issues/50)) ([8c1ba42](https://github.com/sondresjolyst/nstuning-api/commit/8c1ba4293fbf84d59bc0b9212e51f230bd1a4564))
+* bump `Microsoft.EntityFrameworkCore.InMemory` from 10.0.8 to 10.0.9 ([#49](https://github.com/sondresjolyst/nstuning-api/issues/49)) ([7424e5a](https://github.com/sondresjolyst/nstuning-api/commit/7424e5a7bc560ae23f7e36281dce2cfd29979c9f))
+* bump `Microsoft.Extensions.Logging.Abstractions` from 10.0.8 to 10.0.9 ([#51](https://github.com/sondresjolyst/nstuning-api/issues/51)) ([3afa4d2](https://github.com/sondresjolyst/nstuning-api/commit/3afa4d29f408fde6a2790081e6a78c5f8ed39845))
+* bump `SkiaSharp.NativeAssets.Linux.NoDependencies` from 2.88.9 to 3.119.4 ([#53](https://github.com/sondresjolyst/nstuning-api/issues/53)) ([dbc66ea](https://github.com/sondresjolyst/nstuning-api/commit/dbc66ea018222e3eab5074a115b8347b65718864))
+* bump `SkiaSharp` from 2.88.9 to 3.119.4 ([#52](https://github.com/sondresjolyst/nstuning-api/issues/52)) ([2f54e52](https://github.com/sondresjolyst/nstuning-api/commit/2f54e5250a2d0ca077ecb16c52469015e3b3ea51))
+
 ## [1.6.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.5.1...v1.6.0) (2026-06-22)
 
 
