@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.1...v1.6.2) (2026-07-20)
+
+
+### Bug Fixes
+
+* replace removed SKFilterQuality with SKSamplingOptions for SkiaSharp 4.150 ([#73](https://github.com/sondresjolyst/nstuning-api/issues/73)) ([6011983](https://github.com/sondresjolyst/nstuning-api/commit/6011983488fa7836fc91a3754ca05e7f0d4bfd70))
+
 ## [1.6.1](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.0...v1.6.1) (2026-07-19)
 
 
