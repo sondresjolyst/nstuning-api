@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.6.1](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.0...v1.6.1) (2026-07-19)
+
+
+### Dependencies
+
+* bump `actions/checkout` from 6.0.3 to 7.0.0 ([#45](https://github.com/sondresjolyst/nstuning-api/issues/45)) ([8f4cf47](https://github.com/sondresjolyst/nstuning-api/commit/8f4cf47ab668551370605059f43e9eca9e1856b0))
+* bump `actions/setup-dotnet` from 5.3.0 to 5.4.0 ([#56](https://github.com/sondresjolyst/nstuning-api/issues/56)) ([969cf01](https://github.com/sondresjolyst/nstuning-api/commit/969cf0179472c1bdc7dafe472ba4192e6cac5e06))
+* bump `equinor/ops-actions/.github/workflows/docker.yml` from 9.38.2 to 9.38.3 ([#47](https://github.com/sondresjolyst/nstuning-api/issues/47)) ([3350b9e](https://github.com/sondresjolyst/nstuning-api/commit/3350b9e43aff4bac0e28d62436740402045a3d57))
+* bump `equinor/ops-actions/.github/workflows/docker.yml` from 9.38.3 to 9.38.4 ([#55](https://github.com/sondresjolyst/nstuning-api/issues/55)) ([ec52ea0](https://github.com/sondresjolyst/nstuning-api/commit/ec52ea0708f349428b21670d6c695a6b8f7f1cca))
+* bump `equinor/ops-actions/.github/workflows/docker.yml` from 9.38.4 to 9.39.1 ([#65](https://github.com/sondresjolyst/nstuning-api/issues/65)) ([22b23c2](https://github.com/sondresjolyst/nstuning-api/commit/22b23c208fb44f0dbdb030eabdd934eaa159e73b))
+* bump `equinor/ops-actions/.github/workflows/release-please-manifest.yml` from 9.38.2 to 9.38.3 ([#46](https://github.com/sondresjolyst/nstuning-api/issues/46)) ([fa4fba5](https://github.com/sondresjolyst/nstuning-api/commit/fa4fba5d1f29bb07a97965949d3fa45a988170d9))
+* bump `equinor/ops-actions/.github/workflows/release-please-manifest.yml` from 9.38.3 to 9.38.4 ([#57](https://github.com/sondresjolyst/nstuning-api/issues/57)) ([88fdc14](https://github.com/sondresjolyst/nstuning-api/commit/88fdc144dbc9d1cfaac540c5af42758ddf12f639))
+* bump `equinor/ops-actions/.github/workflows/release-please-manifest.yml` from 9.38.4 to 9.39.1 ([#64](https://github.com/sondresjolyst/nstuning-api/issues/64)) ([3a5385b](https://github.com/sondresjolyst/nstuning-api/commit/3a5385baba4ad72e425d90d587cc4f1307e085cc))
+* Bump `Mapster` and `Mapster.DependencyInjection` from 10.0.8 to 10.0.9 ([#59](https://github.com/sondresjolyst/nstuning-api/issues/59)) ([89c52f6](https://github.com/sondresjolyst/nstuning-api/commit/89c52f69be8d9d12ff3fdfa3c3b65b44172c8d04))
+* Bump `Microsoft.EntityFrameworkCore.Design` and `Microsoft.EntityFrameworkCore.Tools` from 10.0.8 to 10.0.9 ([#50](https://github.com/sondresjolyst/nstuning-api/issues/50)) ([8c1ba42](https://github.com/sondresjolyst/nstuning-api/commit/8c1ba4293fbf84d59bc0b9212e51f230bd1a4564))
+* bump `Microsoft.EntityFrameworkCore.InMemory` from 10.0.8 to 10.0.9 ([#49](https://github.com/sondresjolyst/nstuning-api/issues/49)) ([7424e5a](https://github.com/sondresjolyst/nstuning-api/commit/7424e5a7bc560ae23f7e36281dce2cfd29979c9f))
+* bump `Microsoft.Extensions.Logging.Abstractions` from 10.0.8 to 10.0.9 ([#51](https://github.com/sondresjolyst/nstuning-api/issues/51)) ([3afa4d2](https://github.com/sondresjolyst/nstuning-api/commit/3afa4d29f408fde6a2790081e6a78c5f8ed39845))
+* bump `Microsoft.NET.Test.Sdk` from 18.6.0 to 18.7.0 ([#60](https://github.com/sondresjolyst/nstuning-api/issues/60)) ([865b967](https://github.com/sondresjolyst/nstuning-api/commit/865b9674d4002912ed3d63725124c7f94c3627f6))
+* bump `Npgsql.EntityFrameworkCore.PostgreSQL` from 10.0.2 to 10.0.3 ([#70](https://github.com/sondresjolyst/nstuning-api/issues/70)) ([d3bba2f](https://github.com/sondresjolyst/nstuning-api/commit/d3bba2f4df78de02f8525d97ffe27ca28a02633e))
+* bump `SkiaSharp.NativeAssets.Linux.NoDependencies` from 2.88.9 to 3.119.4 ([#53](https://github.com/sondresjolyst/nstuning-api/issues/53)) ([dbc66ea](https://github.com/sondresjolyst/nstuning-api/commit/dbc66ea018222e3eab5074a115b8347b65718864))
+* bump `SkiaSharp.NativeAssets.Linux.NoDependencies` from 3.119.4 to 4.148.0 ([#62](https://github.com/sondresjolyst/nstuning-api/issues/62)) ([75fb1a9](https://github.com/sondresjolyst/nstuning-api/commit/75fb1a94ec87c9dc2ab8a81647b15fc48aa049a7))
+* bump `SkiaSharp.NativeAssets.Linux.NoDependencies` from 4.148.0 to 4.150.0 ([#72](https://github.com/sondresjolyst/nstuning-api/issues/72)) ([33dfdd1](https://github.com/sondresjolyst/nstuning-api/commit/33dfdd1cb621c897fa8871e6dd03fa339ce7529e))
+* bump `SkiaSharp` from 2.88.9 to 3.119.4 ([#52](https://github.com/sondresjolyst/nstuning-api/issues/52)) ([2f54e52](https://github.com/sondresjolyst/nstuning-api/commit/2f54e5250a2d0ca077ecb16c52469015e3b3ea51))
+* bump `SkiaSharp` from 3.119.4 to 4.148.0 ([#61](https://github.com/sondresjolyst/nstuning-api/issues/61)) ([8adcf34](https://github.com/sondresjolyst/nstuning-api/commit/8adcf348d4e6c8fae6feb98264804d5dc982ecba))
+* bump `SkiaSharp` from 4.148.0 to 4.150.0 ([#71](https://github.com/sondresjolyst/nstuning-api/issues/71)) ([1f8a673](https://github.com/sondresjolyst/nstuning-api/commit/1f8a673d554561938458b754dafab1bf67d30220))
+* bump `Swashbuckle.AspNetCore.Annotations` from 10.2.1 to 10.2.3 ([#68](https://github.com/sondresjolyst/nstuning-api/issues/68)) ([6ea5e1b](https://github.com/sondresjolyst/nstuning-api/commit/6ea5e1b0aea2a664abe38bf1be4f8b22a304f61c))
+* bump `Swashbuckle.AspNetCore` from 10.2.1 to 10.2.3 ([#63](https://github.com/sondresjolyst/nstuning-api/issues/63)) ([9fc8df8](https://github.com/sondresjolyst/nstuning-api/commit/9fc8df8c9f86853c89402a00690ea3c2dbf54a58))
+* bump `System.IdentityModel.Tokens.Jwt` from 8.18.0 to 8.19.1 ([#69](https://github.com/sondresjolyst/nstuning-api/issues/69)) ([907d0ea](https://github.com/sondresjolyst/nstuning-api/commit/907d0eaac6420e94aedc5e08443904ec7616566c))
+* Bump Mapster and Mapster.DependencyInjection ([#67](https://github.com/sondresjolyst/nstuning-api/issues/67)) ([e1b06de](https://github.com/sondresjolyst/nstuning-api/commit/e1b06dec57c910854f5cb0ca18595f836c472f37))
+
 ## [1.6.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.5.1...v1.6.0) (2026-06-22)
 
 
