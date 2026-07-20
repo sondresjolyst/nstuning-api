@@ -119,7 +119,7 @@ namespace nstuning_api.Services
                     var height = (int)Math.Round((double)original.Height * width / original.Width);
                     var target = width == original.Width
                         ? original
-                        : original.Resize(new SKImageInfo(width, height), SKFilterQuality.High);
+                        : original.Resize(new SKImageInfo(width, height), new SKSamplingOptions(SKCubicResampler.Mitchell));
                     if (target == null) continue;
 
                     try
