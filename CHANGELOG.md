@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.6.3](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.2...v1.6.3) (2026-07-26)
+
+
+### Dependencies
+
+* bump `actions/checkout` from 7.0.0 to 7.0.1 ([#77](https://github.com/sondresjolyst/nstuning-api/issues/77)) ([9291ca0](https://github.com/sondresjolyst/nstuning-api/commit/9291ca08de173f23de2b4281d07a977d660da83e))
+* bump `actions/setup-dotnet` from 5.4.0 to 6.0.0 ([#78](https://github.com/sondresjolyst/nstuning-api/issues/78)) ([28257fb](https://github.com/sondresjolyst/nstuning-api/commit/28257fbb4b42e90dffdf472127e0d60e6006fdd9))
+* bump `equinor/ops-actions/.github/workflows/docker.yml` from 9.39.1 to 9.39.2 ([#76](https://github.com/sondresjolyst/nstuning-api/issues/76)) ([1ef817e](https://github.com/sondresjolyst/nstuning-api/commit/1ef817ec1e0b004881e8f791af58589efe667ec2))
+* bump `equinor/ops-actions/.github/workflows/release-please-manifest.yml` from 9.39.1 to 9.39.2 ([#75](https://github.com/sondresjolyst/nstuning-api/issues/75)) ([632de05](https://github.com/sondresjolyst/nstuning-api/commit/632de0550f431b55c8253319a241f2ff7a3c85d1))
+* Bump `Mapster` and `Mapster.DependencyInjection` from 10.0.10 to 10.0.11 ([#80](https://github.com/sondresjolyst/nstuning-api/issues/80)) ([ae03e35](https://github.com/sondresjolyst/nstuning-api/commit/ae03e35e10db51576ff9e4c718a44a1178b8d450))
+* bump `Microsoft.AspNetCore.Authentication.JwtBearer` from 10.0.9 to 10.0.10 ([#81](https://github.com/sondresjolyst/nstuning-api/issues/81)) ([f7109ab](https://github.com/sondresjolyst/nstuning-api/commit/f7109abdf2f418eeea777c973d02347cf2df48f9))
+* bump `Microsoft.AspNetCore.Identity.EntityFrameworkCore` from 10.0.9 to 10.0.10 ([#82](https://github.com/sondresjolyst/nstuning-api/issues/82)) ([a493511](https://github.com/sondresjolyst/nstuning-api/commit/a493511a24a119bf233acf0a8c992111f45a196d))
+* bump `Microsoft.AspNetCore.OpenApi` from 10.0.9 to 10.0.10 ([#83](https://github.com/sondresjolyst/nstuning-api/issues/83)) ([a22df80](https://github.com/sondresjolyst/nstuning-api/commit/a22df80bcf715a92e0dcc9123dc361c8fcf85366))
+* bump `Microsoft.EntityFrameworkCore` from 10.0.9 to 10.0.10 ([#84](https://github.com/sondresjolyst/nstuning-api/issues/84)) ([7ab1bb8](https://github.com/sondresjolyst/nstuning-api/commit/7ab1bb87ceffbcf5921ff21fbe82d10515f06f8d))
+* **github-actions:** bump `actions/checkout` from 7.0.0 to 7.0.1 ([#87](https://github.com/sondresjolyst/nstuning-api/issues/87)) ([88ebc82](https://github.com/sondresjolyst/nstuning-api/commit/88ebc82204e5b9517e75a38fd82709028f90d1ec))
+* **nuget:** Bump `Microsoft.EntityFrameworkCore.Design` and `Microsoft.EntityFrameworkCore.Tools` from 10.0.9 to 10.0.10 ([#90](https://github.com/sondresjolyst/nstuning-api/issues/90)) ([fc80b3b](https://github.com/sondresjolyst/nstuning-api/commit/fc80b3b7246b5496c18af588f7cde83c176d235f))
+* **nuget:** bump `Microsoft.EntityFrameworkCore.InMemory` from 10.0.9 to 10.0.10 ([#89](https://github.com/sondresjolyst/nstuning-api/issues/89)) ([f6fa526](https://github.com/sondresjolyst/nstuning-api/commit/f6fa526004033d3047ac284ff26541daa9d84537))
+* **nuget:** Bump `Microsoft.Extensions.Logging.Abstractions` from 10.0.9 to 10.0.10 ([#91](https://github.com/sondresjolyst/nstuning-api/issues/91)) ([54a32e1](https://github.com/sondresjolyst/nstuning-api/commit/54a32e1e916ebee6f98230d68854cd5f207e2acc))
+* **nuget:** Bump `Microsoft.NET.Test.Sdk` from 18.7.0 to 18.8.1 ([#92](https://github.com/sondresjolyst/nstuning-api/issues/92)) ([83f969c](https://github.com/sondresjolyst/nstuning-api/commit/83f969c7d092de6791b4e8861a497c2908c46678))
+* **nuget:** Bump `SkiaSharp` from 4.150.0 to 4.150.1 ([#93](https://github.com/sondresjolyst/nstuning-api/issues/93)) ([df34b82](https://github.com/sondresjolyst/nstuning-api/commit/df34b8248c68c940d01b0981efbdee4f99610bfb))
+
 ## [1.6.2](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.1...v1.6.2) (2026-07-20)
 
 
