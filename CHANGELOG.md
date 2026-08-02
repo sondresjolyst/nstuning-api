@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.6.4](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.3...v1.6.4) (2026-08-02)
+
+
+### Dependencies
+
+* **github-actions:** bump `equinor/ops-actions/.github/workflows/docker.yml` from 9.39.2 to 9.39.3 ([#97](https://github.com/sondresjolyst/nstuning-api/issues/97)) ([b5b7fa7](https://github.com/sondresjolyst/nstuning-api/commit/b5b7fa76206cb91ba8a585affe3347d2351ba128))
+* **github-actions:** bump `equinor/ops-actions/.github/workflows/release-please-manifest.yml` from 9.39.2 to 9.39.3 ([#96](https://github.com/sondresjolyst/nstuning-api/issues/96)) ([bafdaab](https://github.com/sondresjolyst/nstuning-api/commit/bafdaab025331053f31ed020d97b9ec3aeaa88d2))
+* **nuget:** bump `SkiaSharp.NativeAssets.Linux.NoDependencies` from 4.150.0 to 4.150.1 ([#98](https://github.com/sondresjolyst/nstuning-api/issues/98)) ([42c245a](https://github.com/sondresjolyst/nstuning-api/commit/42c245ae1e834bdcab78fc9923ec41aeb9323b7b))
+* **nuget:** bump `System.IdentityModel.Tokens.Jwt` from 8.19.2 to 8.21.0 ([#99](https://github.com/sondresjolyst/nstuning-api/issues/99)) ([6f93d6e](https://github.com/sondresjolyst/nstuning-api/commit/6f93d6e7edbf5b4e3e7b2db7e5bb87f2cc0e9442))
+* **nuget:** bump System.IdentityModel.Tokens.Jwt to 8.19.2 ([#94](https://github.com/sondresjolyst/nstuning-api/issues/94)) ([2bc6e9c](https://github.com/sondresjolyst/nstuning-api/commit/2bc6e9c5b9405d123e5861d93a8e44327301ac50))
+
 ## [1.6.3](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.2...v1.6.3) (2026-07-26)
 
 
