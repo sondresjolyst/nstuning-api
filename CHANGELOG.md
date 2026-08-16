@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.6.6](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.5...v1.6.6) (2026-08-16)
+
+
+### Dependencies
+
+* **github-actions:** bump `equinor/ops-actions/.github/workflows/docker.yml` from 9.39.4 to 9.39.6 ([#107](https://github.com/sondresjolyst/nstuning-api/issues/107)) ([624a49f](https://github.com/sondresjolyst/nstuning-api/commit/624a49f779de9f9a4636e071e51981126eb35546))
+* **github-actions:** bump `equinor/ops-actions/.github/workflows/release-please-manifest.yml` from 9.39.4 to 9.39.6 ([#108](https://github.com/sondresjolyst/nstuning-api/issues/108)) ([087898b](https://github.com/sondresjolyst/nstuning-api/commit/087898bc4327dd396cb1b2d9e0c3ff8498d26a55))
+* **nuget:** bump `SkiaSharp.NativeAssets.Linux.NoDependencies` from 4.151.0 to 4.151.1 ([#110](https://github.com/sondresjolyst/nstuning-api/issues/110)) ([0717dc3](https://github.com/sondresjolyst/nstuning-api/commit/0717dc362f21f857510f316703e5c06dd4fac42a))
+* **nuget:** bump `SkiaSharp` from 4.151.0 to 4.151.1 ([#109](https://github.com/sondresjolyst/nstuning-api/issues/109)) ([cb89ecf](https://github.com/sondresjolyst/nstuning-api/commit/cb89ecff26036d0e7ad13915c66a7fec83879b62))
+
 ## [1.6.5](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.4...v1.6.5) (2026-08-09)
 
 
