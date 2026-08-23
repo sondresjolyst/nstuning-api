@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.6.7](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.6...v1.6.7) (2026-08-23)
+
+
+### Dependencies
+
+* **github-actions:** bump `equinor/ops-actions/.github/workflows/docker.yml` from 9.39.6 to 9.40.0 ([#113](https://github.com/sondresjolyst/nstuning-api/issues/113)) ([ea3cc93](https://github.com/sondresjolyst/nstuning-api/commit/ea3cc93c02b4304766a79ad24996d9644671d883))
+* **github-actions:** bump `equinor/ops-actions/.github/workflows/release-please-manifest.yml` from 9.39.6 to 9.40.0 ([#112](https://github.com/sondresjolyst/nstuning-api/issues/112)) ([53d49ae](https://github.com/sondresjolyst/nstuning-api/commit/53d49ae124c86025a7dcf087c7639b1a11b95ef2))
+* **nuget:** bump `Microsoft.AspNetCore.Authentication.JwtBearer` from 10.0.10 to 10.0.11 ([#114](https://github.com/sondresjolyst/nstuning-api/issues/114)) ([5bf9488](https://github.com/sondresjolyst/nstuning-api/commit/5bf9488981de74b83e4f6351b86567393df5575b))
+* **nuget:** bump `Microsoft.AspNetCore.Identity.EntityFrameworkCore` from 10.0.10 to 10.0.11 ([#115](https://github.com/sondresjolyst/nstuning-api/issues/115)) ([f05beef](https://github.com/sondresjolyst/nstuning-api/commit/f05beefd2f12efe7f3ab17a31cbed890615abd5f))
+* **nuget:** bump `Microsoft.AspNetCore.OpenApi` from 10.0.10 to 10.0.11 ([#116](https://github.com/sondresjolyst/nstuning-api/issues/116)) ([638846d](https://github.com/sondresjolyst/nstuning-api/commit/638846d1e5fc2180e1c53f348a92e17fe787c027))
+* **nuget:** bump `Microsoft.EntityFrameworkCore` from 10.0.10 to 10.0.11 ([#117](https://github.com/sondresjolyst/nstuning-api/issues/117)) ([a23b3b5](https://github.com/sondresjolyst/nstuning-api/commit/a23b3b5a303abe72f259d42a130149c71d543d85))
+* **nuget:** Bump Microsoft.EntityFrameworkCore.Design and Microsoft.EntityFrameworkCore.Tools ([#119](https://github.com/sondresjolyst/nstuning-api/issues/119)) ([f392e8c](https://github.com/sondresjolyst/nstuning-api/commit/f392e8c32835448ce6ca82096bd4bf4f84ee1aa4))
+
 ## [1.6.6](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.5...v1.6.6) (2026-08-16)
 
 
