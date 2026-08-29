@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.6.8](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.7...v1.6.8) (2026-08-29)
+
+
+### Dependencies
+
+* **nuget:** bump `Microsoft.EntityFrameworkCore.InMemory` from 10.0.10 to 10.0.11 ([#123](https://github.com/sondresjolyst/nstuning-api/issues/123)) ([d12caae](https://github.com/sondresjolyst/nstuning-api/commit/d12caae1244a9ca21c55a1659c205706da031d56))
+* **nuget:** bump `Microsoft.Extensions.Logging.Abstractions` from 10.0.10 to 10.0.11 ([#124](https://github.com/sondresjolyst/nstuning-api/issues/124)) ([c21f64b](https://github.com/sondresjolyst/nstuning-api/commit/c21f64b10a32e9a0b687eb382095a24fcea1b608))
+* **nuget:** bump `Microsoft.NET.Test.Sdk` from 18.8.1 to 18.9.0 ([#125](https://github.com/sondresjolyst/nstuning-api/issues/125)) ([ef1edf7](https://github.com/sondresjolyst/nstuning-api/commit/ef1edf7bcd5938199847d51117afec4797fd5615))
+* **nuget:** bump `xunit.runner.visualstudio` from 3.1.5 to 4.0.0 ([#126](https://github.com/sondresjolyst/nstuning-api/issues/126)) ([8236ae3](https://github.com/sondresjolyst/nstuning-api/commit/8236ae3cc93b33f1745212ffee1298fbd1c801fc))
+* **nuget:** bump `xunit.v3` from 3.2.2 to 4.0.0 ([#127](https://github.com/sondresjolyst/nstuning-api/issues/127)) ([52cdddb](https://github.com/sondresjolyst/nstuning-api/commit/52cdddbbc0fa3167ea2ef0c2889b7a9336df02cd))
+
 ## [1.6.7](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.6...v1.6.7) (2026-08-23)
 
 
