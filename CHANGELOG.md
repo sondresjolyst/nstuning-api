@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.9](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.8...v1.6.9) (2026-08-30)
+
+
+### Dependencies
+
+* **nuget:** Bump Mapster and Mapster.DependencyInjection ([#131](https://github.com/sondresjolyst/nstuning-api/issues/131)) ([c17a3b5](https://github.com/sondresjolyst/nstuning-api/commit/c17a3b5f48932e6d95ddf9de330ddd2e56746871))
+
 ## [1.6.8](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.7...v1.6.8) (2026-08-29)
 
 
