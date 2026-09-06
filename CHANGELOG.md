@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.10](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.9...v1.6.10) (2026-09-06)
+
+
+### Dependencies
+
+* **nuget:** bump `brevo_csharp` from 1.1.2 to 1.1.3 ([#134](https://github.com/sondresjolyst/nstuning-api/issues/134)) ([e4ef076](https://github.com/sondresjolyst/nstuning-api/commit/e4ef07617568c8a9302af2e294ae04b228be5568))
+
 ## [1.6.9](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.8...v1.6.9) (2026-08-30)
 
 
