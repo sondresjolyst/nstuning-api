@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.11](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.10...v1.6.11) (2026-09-13)
+
+
+### Dependencies
+
+* **nuget:** bump `SkiaSharp.NativeAssets.Linux.NoDependencies` from 4.151.1 to 4.151.2 ([#138](https://github.com/sondresjolyst/nstuning-api/issues/138)) ([cf62800](https://github.com/sondresjolyst/nstuning-api/commit/cf6280077781d2818a1dfe51939286d5c3320279))
+* **nuget:** bump `SkiaSharp` from 4.151.1 to 4.151.2 ([#137](https://github.com/sondresjolyst/nstuning-api/issues/137)) ([fc90479](https://github.com/sondresjolyst/nstuning-api/commit/fc90479dcb49f630319f921498a49090b7743ebc))
+
 ## [1.6.10](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.9...v1.6.10) (2026-09-06)
 
 
