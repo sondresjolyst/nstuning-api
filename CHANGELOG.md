@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.6.12](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.11...v1.6.12) (2026-09-21)
+
+
+### Dependencies
+
+* **nuget:** bump `Microsoft.Extensions.Logging.Abstractions` from 10.0.11 to 10.0.12 ([#150](https://github.com/sondresjolyst/nstuning-api/issues/150)) ([0f2fedb](https://github.com/sondresjolyst/nstuning-api/commit/0f2fedb6bb9ffc2467002d5da69ea9dd6b68eb5f))
+* **nuget:** bump `Microsoft.NET.Test.Sdk` from 18.9.0 to 18.10.0 ([#151](https://github.com/sondresjolyst/nstuning-api/issues/151)) ([5fc9603](https://github.com/sondresjolyst/nstuning-api/commit/5fc9603e2ce9da60aa9cca170915263b83ca7fcd))
+* **nuget:** bump `xunit.v3` from 4.0.0 to 4.0.1 ([#153](https://github.com/sondresjolyst/nstuning-api/issues/153)) ([7c2a946](https://github.com/sondresjolyst/nstuning-api/commit/7c2a9462332e662bd880556925f2dc462f46bec1))
+* **nuget:** Bump the aspnetcore group with 7 updates ([#148](https://github.com/sondresjolyst/nstuning-api/issues/148)) ([bfcb81b](https://github.com/sondresjolyst/nstuning-api/commit/bfcb81b42184b86c68d26e723a1143d859641592))
+* **nuget:** Bump the skiasharp group with 2 updates ([#149](https://github.com/sondresjolyst/nstuning-api/issues/149)) ([452dd18](https://github.com/sondresjolyst/nstuning-api/commit/452dd18a43ccdc4ede51205463f3fda40bfd4dfb))
+
 ## [1.6.11](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.10...v1.6.11) (2026-09-13)
 
 
