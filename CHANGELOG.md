@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.13](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.12...v1.6.13) (2026-09-25)
+
+
+### Bug Fixes
+
+* add an anonymous health endpoint ([#154](https://github.com/sondresjolyst/nstuning-api/issues/154)) ([eaf2c9c](https://github.com/sondresjolyst/nstuning-api/commit/eaf2c9cd67ba6cc878431c3382dc81d0558f84f6))
+
 ## [1.6.12](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.11...v1.6.12) (2026-09-21)
 
 
