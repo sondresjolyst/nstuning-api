@@ -101,6 +101,8 @@ namespace nstuning_api
                 };
             });
 
+            builder.Services.AddHealthChecks();
+
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("Admin", policy => policy.RequireRole(RoleNames.Admin));
@@ -214,6 +216,7 @@ namespace nstuning_api
             app.UseIpRateLimiting();
             app.MapControllers();
             app.MapEndpoints();
+            app.MapHealthChecks("/health").AllowAnonymous();
             app.Run();
         }
     }
