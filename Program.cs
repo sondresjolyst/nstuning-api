@@ -205,7 +205,11 @@ namespace nstuning_api
             if (!app.Environment.IsDevelopment())
             {
                 app.UseHsts();
-                app.UseHttpsRedirection();
+                // Probes reach the pod over plain HTTP and send no X-Forwarded-Proto, so a
+                // redirect would fail them if an HTTPS port is ever configured.
+                app.UseWhen(
+                    context => !context.Request.Path.StartsWithSegments("/health"),
+                    branch => branch.UseHttpsRedirection());
             }
 
             app.UseSwagger();
