@@ -2,85 +2,80 @@
   <img src="docs/ns-tuning-black-yellow.png" alt="NS Tuning" width="440">
 </p>
 
-<p align="center">
-  The backend behind nstuning.no — accounts, dyno-run showcase, report storage, and enquiries.
-</p>
+# nstuning-api
 
----
-
-nstuning-api is the API for **NS Tuning** — dyno and performance tuning. It
-handles accounts and auth, stores documented dyno runs and their PDF reports,
-sends contact enquiries by email, and serves the admin-managed site content for
+API for NS Tuning, serving
 [nstuning-app](https://github.com/sondresjolyst/nstuning-app).
 
-## What it does
+## Stack
 
-- **Accounts** — registration, login, JWT + refresh tokens, password reset, and
-  roles (`Default` / `Admin`).
-- **Dyno runs** — public showcase; admins create runs with a PDF report and a
-  cover image, stored on an NFS-backed volume and streamed back by the API.
-- **Contact** — enquiries emailed to NS Tuning via Brevo.
-- **Site content** — admin-managed homepage sections, branding, vehicle catalog
-  (brand → model → variant → engine), and settings.
+ASP.NET Core 10, PostgreSQL through EF Core and Npgsql, ASP.NET Identity with
+JWT, Mapster, Serilog, AspNetCoreRateLimit, Brevo.
 
-Built as vertical slices (minimal API endpoints + FluentValidation), with
-PostgreSQL via EF Core.
-
----
-
-## For developers
-
-<details>
-<summary>Run, configure, and the endpoints</summary>
-
-### Stack
-
-ASP.NET Core 10 · PostgreSQL (EF Core / Npgsql) · ASP.NET Identity + JWT ·
-Mapster · Serilog · AspNetCoreRateLimit · Brevo.
-
-### Run locally
+## Quick start
 
 ```bash
 dotnet restore
-dotnet ef database update   # needs local Postgres (see appsettings.Development.json)
+dotnet ef database update   # needs a local Postgres, see appsettings.Development.json
 dotnet run                  # Swagger at /swagger
 ```
 
-### Promote a user to Admin
+Migrations do not run at startup. Apply them yourself before a deploy that adds
+any.
 
-Register via `POST /api/auth/register`, then grant the role:
+## Environment
 
-```sql
-INSERT INTO "AspNetUserRoles" ("UserId", "RoleId")
-SELECT u."Id", r."Id"
-FROM "AspNetUsers" u, "AspNetRoles" r
-WHERE u."Email" = 'you@example.com' AND r."Name" = 'Admin';
-```
+Production reads these from the cluster secret.
 
-### Configuration
+| Variable | Used for |
+| --- | --- |
+| `ConnectionStrings__DefaultConnection` | PostgreSQL connection string |
+| `Jwt__Key`, `Jwt__Issuer` | JWT signing key and issuer. The key must match the app's `NSTUNING_API_JWT_SECRET` |
+| `BrevoSettings__ApiKey`, `BrevoSettings__SenderEmail`, `BrevoSettings__SenderName` | Transactional email |
+| `Storage__ReportsPath` | Mount for dyno reports, `/data/reports` in the cluster |
+| `Storage__ImagesPath` | Mount for uploaded images, `/data/images` in the cluster |
 
-In production, secrets come from environment variables:
+## What it serves
 
-| Variable                                                                  | What it's for                          |
-| ------------------------------------------------------------------------- | -------------------------------------- |
-| `ConnectionStrings__DefaultConnection`                                    | PostgreSQL connection string.          |
-| `Jwt__Key`, `Jwt__Issuer`                                                 | JWT signing key and issuer.            |
-| `BrevoSettings__ApiKey`, `BrevoSettings__SenderEmail`, `BrevoSettings__SenderName` | Brevo email.                  |
-| `Storage__ReportsPath`, `Storage__ImagesPath`                             | NFS-backed mounts for reports/images.  |
+| Area | Holds |
+| --- | --- |
+| Dyno runs | Documented runs with figures and a downloadable PDF report |
+| Vehicle catalog | Brand, model, variant and engine, reused across runs |
+| Content | Home page sections and legal pages |
+| Contact | Enquiries emailed through Brevo |
+| Accounts | Sign-in, JWT and refresh tokens, password reset, roles |
 
-### API reference
+Browse `/swagger` on a running instance for the current surface.
 
-Run the app and browse **Swagger at `/swagger`** for the current endpoints,
-schemas, and auth.
+## Health
 
-### Layout
+| Path | Reports |
+| --- | --- |
+| `/health` | The process is up. No dependency checks, so a database outage does not restart the pod |
+| `/health/ready` | The database connection. Fails while Postgres is unreachable, which takes the pod out of its Service |
 
-```
-Features/        # one folder per slice (Auth, DynoRuns, Users, Vehicles, …)
-Infrastructure/  # endpoint registration, validation filter
-Services/        # email, file storage
-Models/          # EF Core entities + DbContext
-Migrations/      # EF Core migrations
-```
+Both are anonymous, and both are blocked at the ingress: only the kubelet
+reaches them, over the pod address.
 
-</details>
+## Deployment
+
+Image [`sondresjo/nstuning-api`](https://hub.docker.com/r/sondresjo/nstuning-api)
+on Docker Hub, chart `nstuning-api` in
+[tumogroup-charts](https://github.com/sondresjolyst/tumogroup-charts), applied by
+Flux from [tumo-flux](https://github.com/sondresjolyst/tumo-flux) to
+`nstuning-dev` and `nstuning-prod`.
+
+The container runs as the non-root `app` user with a read-only root filesystem,
+so anything written at runtime needs a volume. Reports and images go to the
+`/data` mounts, and the data protection key ring to `/home/app/.aspnet`.
+
+A push to `main` builds the `dev` tag. A release-please release builds `vX.Y.Z`,
+tags it `latest` and opens a chart bump against
+[tumogroup-charts](https://github.com/sondresjolyst/tumogroup-charts). Cluster
+secrets are created by
+[`scripts/nstuning/bootstrap.sh`](https://github.com/sondresjolyst/tumo-platform/blob/main/scripts/nstuning/bootstrap.sh)
+in [tumo-platform](https://github.com/sondresjolyst/tumo-platform).
+
+## License
+
+Proprietary. Copyright (c) 2026 Sondre Sjølyst.
