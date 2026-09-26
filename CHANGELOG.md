@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.13...v1.7.0) (2026-09-26)
+
+
+### Features
+
+* apply pending migrations at startup ([#157](https://github.com/sondresjolyst/nstuning-api/issues/157)) ([1531111](https://github.com/sondresjolyst/nstuning-api/commit/15311115fc0a278d0b3336136b9e58c4a8110802))
+
 ## [1.6.13](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.12...v1.6.13) (2026-09-25)
 
 
