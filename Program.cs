@@ -166,6 +166,19 @@ namespace nstuning_api
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
+                if (app.Configuration.GetValue("Database:AutoMigrate", true))
+                {
+                    var pendingMigrations = (await context.Database.GetPendingMigrationsAsync()).ToList();
+                    if (pendingMigrations.Count > 0)
+                    {
+                        logger.LogInformation(
+                            "Applying {Count} pending migration(s): {Migrations}",
+                            pendingMigrations.Count,
+                            string.Join(", ", pendingMigrations));
+                        await context.Database.MigrateAsync();
+                    }
+                }
+
                 foreach (var roleName in RoleNames.AllRoles)
                 {
                     if (!await roleManager.RoleExistsAsync(roleName))
