@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.7.1](https://github.com/sondresjolyst/nstuning-api/compare/v1.7.0...v1.7.1) (2026-09-27)
+
+
+### Dependencies
+
+* **nuget:** bump `Microsoft.NET.Test.Sdk` from 18.10.0 to 18.10.1 ([#160](https://github.com/sondresjolyst/nstuning-api/issues/160)) ([73a23c3](https://github.com/sondresjolyst/nstuning-api/commit/73a23c3bdb8fca94e7209bfdf29324719c06a989))
+* **nuget:** bump `System.IdentityModel.Tokens.Jwt` from 8.22.0 to 8.23.0 ([#161](https://github.com/sondresjolyst/nstuning-api/issues/161)) ([9eaf893](https://github.com/sondresjolyst/nstuning-api/commit/9eaf893939dac805792aaaa49080a28029051909))
+* **nuget:** Bump the skiasharp group with 2 updates ([#159](https://github.com/sondresjolyst/nstuning-api/issues/159)) ([a4618ee](https://github.com/sondresjolyst/nstuning-api/commit/a4618ee6b20a633372d0e3a45bba6a8d35bffa96))
+
 ## [1.7.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.6.13...v1.7.0) (2026-09-26)
 
 
