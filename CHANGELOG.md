@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.2](https://github.com/sondresjolyst/nstuning-api/compare/v1.7.1...v1.7.2) (2026-10-04)
+
+
+### Dependencies
+
+* **nuget:** bump `Moq` from 4.20.72 to 4.21.0 ([#166](https://github.com/sondresjolyst/nstuning-api/issues/166)) ([c5c033d](https://github.com/sondresjolyst/nstuning-api/commit/c5c033d3ece096cc3bbbcc301311db862ebbc6c9))
+* **nuget:** Bump Mapster and Mapster.DependencyInjection ([#165](https://github.com/sondresjolyst/nstuning-api/issues/165)) ([c620849](https://github.com/sondresjolyst/nstuning-api/commit/c62084979a312769adf97129c2dc12c98a942e05))
+
 ## [1.7.1](https://github.com/sondresjolyst/nstuning-api/compare/v1.7.0...v1.7.1) (2026-09-27)
 
 
