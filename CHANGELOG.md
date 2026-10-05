@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/sondresjolyst/nstuning-api/compare/v1.7.2...v1.7.3) (2026-10-05)
+
+
+### Bug Fixes
+
+* evict every refresh token past the cap, not just one ([#168](https://github.com/sondresjolyst/nstuning-api/issues/168)) ([64a61cb](https://github.com/sondresjolyst/nstuning-api/commit/64a61cb8f402b31acb43fe9986176f8551f7dde4))
+
 ## [1.7.2](https://github.com/sondresjolyst/nstuning-api/compare/v1.7.1...v1.7.2) (2026-10-04)
 
 
