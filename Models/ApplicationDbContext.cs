@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using nstuning_api.Models.Admin;
-using nstuning_api.Models.Auth;
+using SjolystInnovation.AppKit.Auth;
 
 namespace nstuning_api.Models
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : IdentityDbContext<User, IdentityRole, string>(options)
+        : IdentityDbContext<User, IdentityRole, string>(options), IAuthDbContext
     {
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<AppSettings> AppSettings { get; set; }
@@ -25,6 +25,7 @@ namespace nstuning_api.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.AddAppKitRefreshTokens<User>();
 
             modelBuilder.Entity<DailyStatSnapshot>()
                 .HasIndex(s => s.Date)
