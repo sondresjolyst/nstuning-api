@@ -26,6 +26,8 @@ namespace nstuning_api.Features.Auth
 
     public record TokenResponse(string Token, string RefreshToken);
 
+    public record LogoutRequestDto(string RefreshToken);
+
     public record RequestPasswordResetDto(string Email);
 
     public record ResetPasswordDto(string Email, string Code, string NewPassword);
@@ -58,6 +60,11 @@ namespace nstuning_api.Features.Auth
             RuleFor(x => x.Token).NotEmpty();
             RuleFor(x => x.RefreshToken).NotEmpty();
         }
+    }
+
+    public class LogoutValidator : AbstractValidator<LogoutRequestDto>
+    {
+        public LogoutValidator() => RuleFor(x => x.RefreshToken).NotEmpty();
     }
 
     public class RequestPasswordResetValidator : AbstractValidator<RequestPasswordResetDto>
