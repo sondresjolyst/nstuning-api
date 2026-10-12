@@ -20,6 +20,7 @@ using Serilog;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
+using SjolystInnovation.AppKit.Auth;
 
 namespace nstuning_api
 {
@@ -73,6 +74,7 @@ namespace nstuning_api
                 });
 
             builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddAppKitAuth<ApplicationDbContext>(builder.Configuration.GetSection("Jwt"));
             builder.Services.AddSingleton<IReportStorageService, ReportStorageService>();
             builder.Services.AddSingleton<IImageStorageService, ImageStorageService>();
             builder.Services.AddHostedService<StatsSnapshotService>();

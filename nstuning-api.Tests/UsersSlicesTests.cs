@@ -5,7 +5,7 @@ using Moq;
 using nstuning_api.Features.Users;
 using nstuning_api.Infrastructure;
 using nstuning_api.Models;
-using nstuning_api.Models.Auth;
+using SjolystInnovation.AppKit.Auth;
 using Xunit;
 
 namespace nstuning_api.Tests;
