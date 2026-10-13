@@ -35,6 +35,7 @@ Production reads these from the cluster secret.
 | `BrevoSettings__ApiKey`, `BrevoSettings__SenderEmail`, `BrevoSettings__SenderName` | Transactional email |
 | `Storage__ReportsPath` | Mount for dyno reports, `/data/reports` in the cluster |
 | `Storage__ImagesPath` | Mount for uploaded images, `/data/images` in the cluster |
+| `TrustedProxies` | CIDRs allowed to set `X-Forwarded-For`. Defaults to the private ranges. A wildcard would let any caller forge the client IP the rate limiter reads |
 
 ## What it serves
 
