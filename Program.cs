@@ -55,7 +55,13 @@ namespace nstuning_api
 
             builder.Services.AddAppKitBrevo(builder.Configuration.GetSection("BrevoSettings"));
             builder.Services.AddScoped<IEmailService, EmailService>();
-            builder.Services.AddScoped<IAuthEmails<User>, AuthEmails>();
+            builder.Services.AddScoped<IEmailBrand, AuthEmailBrand>();
+            builder.Services.AddAppKitAuthEmails<User>(o =>
+            {
+                o.HeaderColor = "#ffd400";
+                o.AccentColor = "#ffd400";
+                o.SetPasswordUrl = $"{builder.Configuration["Site:BaseUrl"]?.TrimEnd('/')}/reset-password";
+            });
             builder.Services.AddAppKitAccounts<User, ApplicationDbContext>(o => o.AdminRole = RoleNames.Admin);
             builder.Services.AddAppKitAuth<ApplicationDbContext>(builder.Configuration.GetSection("Jwt"));
             builder.Services.AddSingleton<IReportStorageService, ReportStorageService>();
