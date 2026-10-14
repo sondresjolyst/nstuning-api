@@ -4,7 +4,7 @@ using SjolystInnovation.AppKit.Auth;
 
 namespace nstuning_api.Models
 {
-    public class User : IdentityUser, IPasswordResetUser
+    public class User : IdentityUser, IPasswordResetUser, SjolystInnovation.AppKit.Auth.IAppKitAccount
     {
         [Required]
         [MaxLength(50)]

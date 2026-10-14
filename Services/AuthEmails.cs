@@ -13,5 +13,12 @@ namespace nstuning_api.Services
         await email.SendEmailAsync(user.Email!, "Password reset code",
             AuthEmailTemplates.PasswordReset(settings.CompanyName, user.FirstName, code));
         }
+
+        public async Task SendInviteAsync(User user, string code, CancellationToken cancellationToken)
+        {
+            var settings = await db.AppSettings.FindAsync([1], cancellationToken) ?? new AppSettings();
+            await email.SendEmailAsync(user.Email!, $"Set your password at {settings.CompanyName}",
+                AuthEmailTemplates.Invite(settings.CompanyName, user.FirstName, code));
+        }
     }
 }
