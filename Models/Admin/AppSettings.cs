@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using SjolystInnovation.AppKit.SiteSettings;
 
 namespace nstuning_api.Models.Admin
 {
-    public class AppSettings
+    public class AppSettings : ICompanySettings, IBrandingSettings
     {
         public int Id { get; set; } = 1;
 
@@ -22,7 +24,29 @@ namespace nstuning_api.Models.Admin
         public bool VatRegistered { get; set; } = true;
 
         [MaxLength(200)]
-        public string Address { get; set; } = "Håbakken 7, 4355 Kvernaland";
+        public string StreetAddress { get; set; } = "Håbakken 7";
+
+        /// <summary>Postnummer. Kept apart from the street so structured data can expose it as its own field.</summary>
+        [MaxLength(20)]
+        public string PostalCode { get; set; } = "4355";
+
+        /// <summary>Poststed.</summary>
+        [MaxLength(100)]
+        public string AddressLocality { get; set; } = "Kvernaland";
+
+        /// <summary>Fylke. Optional and omitted from structured data while blank.</summary>
+        [MaxLength(100)]
+        public string AddressRegion { get; set; } = "";
+
+        /// <summary>The address as one line, for display. Derived, never stored.</summary>
+        [NotMapped]
+        public string FormattedAddress => PostalAddress.Format(StreetAddress, PostalCode, AddressLocality);
+
+        [MaxLength(200)]
+        public string PublicEmail { get; set; } = "";
+
+        [MaxLength(40)]
+        public string PublicPhone { get; set; } = "";
 
         public string? HomePageJson { get; set; }
 
