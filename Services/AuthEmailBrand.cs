@@ -14,7 +14,7 @@ namespace nstuning_api.Services
             {
                 LegalName = s.CompanyLegalName,
                 OrgNumber = string.IsNullOrWhiteSpace(s.OrgNumber) ? null : $"Org. no. {s.OrgNumber}{(s.VatRegistered ? " MVA" : "")}",
-                Address = s.Address,
+                Address = s.FormattedAddress,
                 Email = null,
             };
         }

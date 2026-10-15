@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 using SjolystInnovation.AppKit.Auth;
+using SjolystInnovation.AppKit.SiteSettings;
 using SjolystInnovation.AppKit.Hosting;
 using SjolystInnovation.AppKit.Email;
 
@@ -183,6 +184,7 @@ namespace nstuning_api
             app.MapEndpoints();
             app.MapAppKitAuthEndpoints<User, ApplicationDbContext>(configure: o => o.IsActive = u => !u.IsDeleted);
             app.MapAppKitAccount<User>();
+            app.MapAppKitSiteSettings<ApplicationDbContext, AppSettings>(configure: o => o.Policy = Policies.Admin);
             app.MapAppKitUserAdmin<User, ApplicationDbContext>(configure: o =>
             {
                 o.Roles = RoleNames.AllRoles;
