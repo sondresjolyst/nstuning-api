@@ -1,5 +1,36 @@
 # Changelog
 
+## [1.8.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.7.2...v1.8.0) (2026-10-17)
+
+
+### Features
+
+* **auth:** end sessions at the API on logout and after a password reset ([#174](https://github.com/sondresjolyst/nstuning-api/issues/174)) ([de6ad00](https://github.com/sondresjolyst/nstuning-api/commit/de6ad004b35dd404b98bdaf284550667f0de4edc))
+* **auth:** send reset and invite emails through SjolystInnovation.AppKit.Auth ([#183](https://github.com/sondresjolyst/nstuning-api/issues/183)) ([8d88d77](https://github.com/sondresjolyst/nstuning-api/commit/8d88d779eb19d70709d5dde761bdf111a1641eea))
+* **auth:** serve sign-in and password reset from SjolystInnovation.AppKit.Auth ([#179](https://github.com/sondresjolyst/nstuning-api/issues/179)) ([d9d7294](https://github.com/sondresjolyst/nstuning-api/commit/d9d72944f941896d528051fdbdd8f36f76f12be9))
+* **auth:** use SjolystInnovation.AppKit.Auth for Identity, bearer tokens and token cleanup ([#177](https://github.com/sondresjolyst/nstuning-api/issues/177)) ([654c7cf](https://github.com/sondresjolyst/nstuning-api/commit/654c7cf007fcf2a5c59bc2083b7ca8399e670b20))
+* **content:** move the home page sections into the PageSections table from SjolystInnovation.AppKit.SiteSettings ([#191](https://github.com/sondresjolyst/nstuning-api/issues/191)) ([0f0f5ae](https://github.com/sondresjolyst/nstuning-api/commit/0f0f5ae1ce5787ccca3fe1b6987abffb0947cf30))
+* **email:** send through SjolystInnovation.AppKit.Email instead of the Brevo SDK ([#178](https://github.com/sondresjolyst/nstuning-api/issues/178)) ([393fd49](https://github.com/sondresjolyst/nstuning-api/commit/393fd499aa789f4820ad2f548f29c8054b49a7d4))
+* **legal:** serve the terms, privacy and cookie pages from SjolystInnovation.AppKit.SiteSettings ([#189](https://github.com/sondresjolyst/nstuning-api/issues/189)) ([3e51a00](https://github.com/sondresjolyst/nstuning-api/commit/3e51a00a10004dc7e384f7359e6d7fa4d7ddae29)), closes [#186](https://github.com/sondresjolyst/nstuning-api/issues/186)
+* **settings:** move settings, company info and branding onto SjolystInnovation.AppKit.SiteSettings and split the address ([#185](https://github.com/sondresjolyst/nstuning-api/issues/185)) ([985cf72](https://github.com/sondresjolyst/nstuning-api/commit/985cf7278d14edfbbad0da9a40935c5fb3c20806))
+* use SjolystInnovation.AppKit.Hosting for startup and rate limiting ([#176](https://github.com/sondresjolyst/nstuning-api/issues/176)) ([1a5f8c8](https://github.com/sondresjolyst/nstuning-api/commit/1a5f8c821b2896bcaf5d0422dc95936a4f5b8d3f))
+* **users:** delete accounts through SjolystInnovation.AppKit.Auth ([#181](https://github.com/sondresjolyst/nstuning-api/issues/181)) ([270f0d2](https://github.com/sondresjolyst/nstuning-api/commit/270f0d20880e083e097de8e9429d6fd316b53e50))
+* **users:** serve user admin, invites and first-admin seeding from SjolystInnovation.AppKit.Auth ([#180](https://github.com/sondresjolyst/nstuning-api/issues/180)) ([bccffbb](https://github.com/sondresjolyst/nstuning-api/commit/bccffbb3a513d11d55670a4e54afc364c595ce95))
+
+
+### Bug Fixes
+
+* **branding:** check logo and icon uploads by their decoded format ([#172](https://github.com/sondresjolyst/nstuning-api/issues/172)) ([e4c17c8](https://github.com/sondresjolyst/nstuning-api/commit/e4c17c8da07d0048e1c154d4dd79fc57a23ed9e5))
+* evict every refresh token past the cap, not just one ([#168](https://github.com/sondresjolyst/nstuning-api/issues/168)) ([64a61cb](https://github.com/sondresjolyst/nstuning-api/commit/64a61cb8f402b31acb43fe9986176f8551f7dde4))
+* trust only configured proxies for X-Forwarded-For ([#175](https://github.com/sondresjolyst/nstuning-api/issues/175)) ([acc70a0](https://github.com/sondresjolyst/nstuning-api/commit/acc70a06420c043d6a6ea53a1ac08912d101ae6b))
+
+
+### Dependencies
+
+* bump SjolystInnovation.AppKit.Auth to 0.8.0 ([#184](https://github.com/sondresjolyst/nstuning-api/issues/184)) ([48b45b8](https://github.com/sondresjolyst/nstuning-api/commit/48b45b80e2662de7a30e1dda6934d0620a1cf286))
+* **nuget:** bump `coverlet.collector` from 10.0.1 to 10.1.0 ([#171](https://github.com/sondresjolyst/nstuning-api/issues/171)) ([aa37848](https://github.com/sondresjolyst/nstuning-api/commit/aa37848dcf3198bba40b3bfc787a383d5a6370bc))
+* **nuget:** Bump the skiasharp group with 2 updates ([#170](https://github.com/sondresjolyst/nstuning-api/issues/170)) ([71d96d8](https://github.com/sondresjolyst/nstuning-api/commit/71d96d8a359f5c76ec75124c88e21dc37ca0e627))
+
 ## [1.7.2](https://github.com/sondresjolyst/nstuning-api/compare/v1.7.1...v1.7.2) (2026-10-04)
 
 
