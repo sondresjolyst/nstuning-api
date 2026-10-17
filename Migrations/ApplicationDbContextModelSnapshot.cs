@@ -187,6 +187,77 @@ namespace nstuning_api.Migrations
                     b.ToTable("RefreshTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SjolystInnovation.AppKit.Storage.Images.ContentImage", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(260)
+                        .HasColumnType("character varying(260)");
+
+                    b.Property<int>("Height")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("SizeBytes")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("StoredPath")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<string>("UploadedByUserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.Property<int>("Width")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContentImages", (string)null);
+                });
+
+            modelBuilder.Entity("SjolystInnovation.AppKit.Storage.Images.ContentImageVariant", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<string>("ContentImageId")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<long>("SizeBytes")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("StoredPath")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<int>("Width")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContentImageId");
+
+                    b.ToTable("ContentImageVariants", (string)null);
+                });
+
             modelBuilder.Entity("nstuning_api.Models.Admin.AppSettings", b =>
                 {
                     b.Property<int>("Id")
@@ -423,71 +494,6 @@ namespace nstuning_api.Migrations
                         .IsUnique();
 
                     b.ToTable("CarVariants");
-                });
-
-            modelBuilder.Entity("nstuning_api.Models.ContentImage", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
-
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasMaxLength(260)
-                        .HasColumnType("character varying(260)");
-
-                    b.Property<long>("SizeBytes")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("StoredPath")
-                        .IsRequired()
-                        .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
-
-                    b.Property<string>("UploadedByUserId")
-                        .HasMaxLength(450)
-                        .HasColumnType("character varying(450)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ContentImages");
-                });
-
-            modelBuilder.Entity("nstuning_api.Models.ContentImageVariant", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
-
-                    b.Property<string>("ContentImageId")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)");
-
-                    b.Property<long>("SizeBytes")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("StoredPath")
-                        .IsRequired()
-                        .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
-
-                    b.Property<int>("Width")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContentImageId");
-
-                    b.ToTable("ContentImageVariants");
                 });
 
             modelBuilder.Entity("nstuning_api.Models.DynoRun", b =>
@@ -789,6 +795,17 @@ namespace nstuning_api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SjolystInnovation.AppKit.Storage.Images.ContentImageVariant", b =>
+                {
+                    b.HasOne("SjolystInnovation.AppKit.Storage.Images.ContentImage", "ContentImage")
+                        .WithMany("Variants")
+                        .HasForeignKey("ContentImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContentImage");
+                });
+
             modelBuilder.Entity("nstuning_api.Models.CarEngine", b =>
                 {
                     b.HasOne("nstuning_api.Models.CarBrand", "Brand")
@@ -840,20 +857,9 @@ namespace nstuning_api.Migrations
                     b.Navigation("Model");
                 });
 
-            modelBuilder.Entity("nstuning_api.Models.ContentImageVariant", b =>
-                {
-                    b.HasOne("nstuning_api.Models.ContentImage", "ContentImage")
-                        .WithMany("Variants")
-                        .HasForeignKey("ContentImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ContentImage");
-                });
-
             modelBuilder.Entity("nstuning_api.Models.DynoRun", b =>
                 {
-                    b.HasOne("nstuning_api.Models.ContentImage", "CoverImage")
+                    b.HasOne("SjolystInnovation.AppKit.Storage.Images.ContentImage", "CoverImage")
                         .WithMany()
                         .HasForeignKey("CoverImageId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -872,7 +878,7 @@ namespace nstuning_api.Migrations
                     b.Navigation("DynoRun");
                 });
 
-            modelBuilder.Entity("nstuning_api.Models.ContentImage", b =>
+            modelBuilder.Entity("SjolystInnovation.AppKit.Storage.Images.ContentImage", b =>
                 {
                     b.Navigation("Variants");
                 });

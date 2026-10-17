@@ -4,6 +4,7 @@ using nstuning_api.Constants;
 using nstuning_api.Infrastructure;
 using nstuning_api.Models;
 using nstuning_api.Services;
+using SjolystInnovation.AppKit.Storage;
 
 namespace nstuning_api.Features.DynoRuns
 {
@@ -31,16 +32,15 @@ namespace nstuning_api.Features.DynoRuns
             return TypedResults.Ok(mapper.Map<DynoRunDto>(run));
         }
 
-        public static async Task<IResult> GetReport(int id, HttpContext http, ApplicationDbContext db, IReportStorageService storage, CancellationToken ct)
+        public static async Task<IResult> GetReport(int id, HttpContext http, ApplicationDbContext db,
+            [FromKeyedServices(ReportStore.Name)] IAppKitFileStore storage, CancellationToken ct)
         {
             var run = await db.DynoRuns.AsNoTracking().Include(d => d.Report).FirstOrDefaultAsync(d => d.Id == id, ct);
             if (run == null || (!run.Published && !IsAdmin(http)) || run.Report == null)
                 return TypedResults.NotFound();
-            if (!storage.Exists(run.Report.StoredPath))
-                return TypedResults.NotFound();
 
-            http.Response.Headers.ContentDisposition = $"inline; filename=\"{run.Report.FileName}\"";
-            return TypedResults.File(storage.OpenRead(run.Report.StoredPath), run.Report.ContentType);
+            return await AppKitFiles.ServeAsync(storage, run.Report.StoredPath, run.Report.FileName, run.Report.ContentType,
+                inline: true, cancellationToken: ct);
         }
 
         public class Endpoints : IEndpoint

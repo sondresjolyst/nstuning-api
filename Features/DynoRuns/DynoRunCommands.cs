@@ -6,6 +6,9 @@ using nstuning_api.Helpers;
 using nstuning_api.Infrastructure;
 using nstuning_api.Models;
 using nstuning_api.Services;
+using SjolystInnovation.AppKit.Auth;
+using SjolystInnovation.AppKit.Storage;
+using SjolystInnovation.AppKit.Storage.Images;
 
 namespace nstuning_api.Features.DynoRuns
 {
@@ -13,7 +16,7 @@ namespace nstuning_api.Features.DynoRuns
     public static class DynoRunCommands
     {
         public static async Task<IResult> Create([FromForm] CreateDynoRunDto dto, HttpContext http, ApplicationDbContext db,
-            IReportStorageService reports, IImageStorageService images, IMapper mapper, CancellationToken ct)
+            [FromKeyedServices(ReportStore.Name)] IAppKitFileStore reports, IContentImageService images, IMapper mapper, CancellationToken ct)
         {
             var run = new DynoRun
             {
@@ -43,9 +46,9 @@ namespace nstuning_api.Features.DynoRuns
                 UpdatedAt = DateTime.UtcNow
             };
 
-            await ApplyCoverImageAsync(run, dto.CoverImage, http, db, images, ct);
-            if (dto.Report != null)
-                run.Report = await SaveReportAsync(dto.Report, http, reports, ct);
+            var (report, cover) = await StoreUploadsAsync(dto.Report, dto.CoverImage, http, reports, images, ct);
+            if (report != null) run.Report = ToReport(report, http);
+            if (cover != null) run.CoverImage = cover;
 
             db.DynoRuns.Add(run);
             await db.SaveChangesAsync(ct);
@@ -53,10 +56,13 @@ namespace nstuning_api.Features.DynoRuns
         }
 
         public static async Task<IResult> Update(int id, [FromForm] UpdateDynoRunDto dto, HttpContext http, ApplicationDbContext db,
-            IReportStorageService reports, IImageStorageService images, IMapper mapper, CancellationToken ct)
+            [FromKeyedServices(ReportStore.Name)] IAppKitFileStore reports, IContentImageService images, IMapper mapper, CancellationToken ct)
         {
             var run = await db.DynoRuns.Include(d => d.Report).FirstOrDefaultAsync(d => d.Id == id, ct);
             if (run == null) return TypedResults.NotFound();
+
+            // The cover's CreateAsync saves the context, so the uploads go in before the run changes.
+            var (report, cover) = await StoreUploadsAsync(dto.Report, dto.CoverImage, http, reports, images, ct);
 
             if (!string.Equals(run.Title, dto.Title, StringComparison.Ordinal))
                 run.Slug = await UniqueSlugAsync(dto.Title, run.Id, db, ct);
@@ -84,83 +90,78 @@ namespace nstuning_api.Features.DynoRuns
             run.SortOrder = dto.SortOrder;
             run.UpdatedAt = DateTime.UtcNow;
 
-            await ApplyCoverImageAsync(run, dto.CoverImage, http, db, images, ct);
-
-            if (dto.Report != null)
-            {
-                if (run.Report != null) reports.Delete(run.Report.StoredPath);
-                run.Report = await SaveReportAsync(dto.Report, http, reports, ct, run.Report);
-            }
+            var oldReportPath = report != null ? run.Report?.StoredPath : null;
+            if (report != null) run.Report = ToReport(report, http, run.Report);
+            var oldCoverId = cover != null ? run.CoverImageId : null;
+            if (cover != null) run.CoverImage = cover;
 
             await db.SaveChangesAsync(ct);
+
+            // The replaced files go once nothing points at them.
+            if (oldReportPath != null) await reports.DeleteAsync(oldReportPath, CancellationToken.None);
+            if (oldCoverId != null)
+            {
+                var old = await db.ContentImages.Include(i => i.Variants).FirstOrDefaultAsync(i => i.Id == oldCoverId, ct);
+                if (old != null) await images.DeleteAsync(old, ct);
+            }
+
             return TypedResults.Ok(mapper.Map<DynoRunDto>(run));
         }
 
-        public static async Task<IResult> Delete(int id, ApplicationDbContext db, IReportStorageService reports, IImageStorageService images, CancellationToken ct)
+        public static async Task<IResult> Delete(int id, ApplicationDbContext db,
+            [FromKeyedServices(ReportStore.Name)] IAppKitFileStore reports, IContentImageService images, CancellationToken ct)
         {
             var run = await db.DynoRuns.Include(d => d.Report).Include(d => d.CoverImage).FirstOrDefaultAsync(d => d.Id == id, ct);
             if (run == null) return TypedResults.NotFound();
 
-            if (run.Report != null) reports.Delete(run.Report.StoredPath);
-            if (run.CoverImage != null)
-            {
-                images.Delete(run.CoverImage.StoredPath);
-                db.ContentImages.Remove(run.CoverImage);
-            }
+            var reportPath = run.Report?.StoredPath;
+            var cover = run.CoverImage;
 
             db.DynoRuns.Remove(run);
             await db.SaveChangesAsync(ct);
+
+            if (reportPath != null) await reports.DeleteAsync(reportPath, CancellationToken.None);
+            if (cover != null) await images.DeleteAsync(cover, ct);
             return TypedResults.NoContent();
         }
 
-        private static async Task<DynoRunReport> SaveReportAsync(IFormFile file, HttpContext http, IReportStorageService reports, CancellationToken ct, DynoRunReport? existing = null)
+        /// <summary>
+        /// Stores the uploaded report file and cover image. A refused cover deletes the stored report again,
+        /// so a refused request leaves nothing behind. The cover is saved to the database at once.
+        /// </summary>
+        private static async Task<(StoredFile? Report, ContentImage? Cover)> StoreUploadsAsync(IFormFile? reportFile, IFormFile? coverFile,
+            HttpContext http, IAppKitFileStore reports, IContentImageService images, CancellationToken ct)
         {
-            var storedName = await reports.SaveAsync(file, ct);
-            var report = existing ?? new DynoRunReport { FileName = "", ContentType = "application/pdf", StoredPath = "" };
-            report.FileName = Path.GetFileName(file.FileName);
-            report.ContentType = "application/pdf";
-            report.SizeBytes = file.Length;
-            report.StoredPath = storedName;
-            report.UploadedByUserId = http.User.UserId();
-            // New reports keep the model default (now); re-uploads keep their original date.
-            return report;
+            StoredFile? report = null;
+            if (reportFile != null)
+            {
+                await using var content = reportFile.OpenReadStream();
+                report = await reports.SaveAsync(content, reportFile.FileName, ct);
+            }
+
+            if (coverFile == null || coverFile.Length == 0) return (report, null);
+            try
+            {
+                await using var content = coverFile.OpenReadStream();
+                return (report, await images.CreateAsync(content, coverFile.FileName, http.User.GetUserId(), ct));
+            }
+            catch
+            {
+                if (report != null) await reports.DeleteAsync(report.StoredPath, CancellationToken.None);
+                throw;
+            }
         }
 
-        private static async Task ApplyCoverImageAsync(DynoRun run, IFormFile? cover, HttpContext http, ApplicationDbContext db, IImageStorageService images, CancellationToken ct)
+        private static DynoRunReport ToReport(StoredFile stored, HttpContext http, DynoRunReport? existing = null)
         {
-            if (cover == null || cover.Length == 0) return;
-
-            var (storedPath, contentType, sizeBytes) = await images.SaveAsync(cover, ct);
-            var oldImageId = run.CoverImageId;
-
-            var newImage = new ContentImage
-            {
-                FileName = Path.GetFileName(cover.FileName),
-                ContentType = contentType,
-                SizeBytes = sizeBytes,
-                StoredPath = storedPath,
-                UploadedByUserId = http.User.UserId()
-            };
-            // Add explicitly: with a client-set key EF would otherwise track the
-            // nav-attached entity as Unchanged and skip the insert.
-            db.ContentImages.Add(newImage);
-            run.CoverImage = newImage;
-
-            var variants = await images.GenerateWebpVariantsAsync(storedPath, ct);
-            foreach (var v in variants)
-                newImage.Variants.Add(ContentImageVariant.From(newImage.Id, v));
-
-            if (oldImageId != null)
-            {
-                var old = await db.ContentImages.Include(i => i.Variants).FirstOrDefaultAsync(i => i.Id == oldImageId, ct);
-                if (old != null)
-                {
-                    images.Delete(old.StoredPath);
-                    foreach (var v in old.Variants)
-                        images.Delete(v.StoredPath);
-                    db.ContentImages.Remove(old);
-                }
-            }
+            var report = existing ?? new DynoRunReport { FileName = "", ContentType = "application/pdf", StoredPath = "" };
+            report.FileName = stored.FileName;
+            report.ContentType = stored.ContentType;
+            report.SizeBytes = stored.SizeBytes;
+            report.StoredPath = stored.StoredPath;
+            report.UploadedByUserId = http.User.GetUserId();
+            // New reports keep the model default (now); re-uploads keep their original date.
+            return report;
         }
 
         private static async Task<string> UniqueSlugAsync(string title, int? excludeId, ApplicationDbContext db, CancellationToken ct)
