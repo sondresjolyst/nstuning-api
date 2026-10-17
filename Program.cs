@@ -183,6 +183,7 @@ namespace nstuning_api
                 o.Policy = Policies.Admin;
                 o.NewUser = u => new User { FirstName = u.FirstName, LastName = u.LastName };
             });
+            app.MapAppKitEmailStats(configure: o => o.Policy = Policies.Admin);
             app.MapAppKitContentImages<ApplicationDbContext>("/api/content-images", o => o.Policy = Policies.Admin);
             app.MapAppKitDailyStats<ApplicationDbContext, DailyStatSnapshot>("/api/admin/stats", o => o.Policy = Policies.Admin);
             app.MapAppKitHealthChecks();
