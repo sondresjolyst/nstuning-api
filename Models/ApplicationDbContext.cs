@@ -23,6 +23,7 @@ namespace nstuning_api.Models
         public DbSet<CarVariant> CarVariants { get; set; }
         public DbSet<CarEngine> CarEngines { get; set; }
         public DbSet<CarModelEngine> CarModelEngines { get; set; }
+        public DbSet<PageSections> PageSections { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +31,7 @@ namespace nstuning_api.Models
             modelBuilder.AddAppKitRefreshTokens<User>();
             modelBuilder.AddAppKitContentImages();
             modelBuilder.AddAppKitLegalPages();
+            modelBuilder.AddAppKitPageSections();
 
             modelBuilder.Entity<DailyStatSnapshot>()
                 .HasIndex(s => s.Date)

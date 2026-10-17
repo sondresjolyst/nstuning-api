@@ -172,6 +172,11 @@ namespace nstuning_api
                 o.Locales = [LegalSeedText.Locale];
                 o.Policy = Policies.Admin;
             });
+            app.MapAppKitPageSections<ApplicationDbContext>(configure: o =>
+            {
+                o.Locales = ["en"];
+                o.Policy = Policies.Admin;
+            });
             app.MapAppKitUserAdmin<User, ApplicationDbContext>(configure: o =>
             {
                 o.Roles = RoleNames.AllRoles;
