@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using nstuning_api.Models.Admin;
 using SjolystInnovation.AppKit.Auth;
+using SjolystInnovation.AppKit.SiteSettings;
 using SjolystInnovation.AppKit.Storage.Images;
 
 namespace nstuning_api.Models
@@ -28,6 +29,7 @@ namespace nstuning_api.Models
             base.OnModelCreating(modelBuilder);
             modelBuilder.AddAppKitRefreshTokens<User>();
             modelBuilder.AddAppKitContentImages();
+            modelBuilder.AddAppKitLegalPages();
 
             modelBuilder.Entity<DailyStatSnapshot>()
                 .HasIndex(s => s.Date)

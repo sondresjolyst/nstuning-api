@@ -144,6 +144,7 @@ namespace nstuning_api
                     await context.SaveChangesAsync();
                 }
             }
+            await app.Services.SeedAppKitLegalPagesAsync<ApplicationDbContext>(LegalSeedText.All);
 
             app.UseAppKitForwardedHeaders();
 
@@ -166,6 +167,11 @@ namespace nstuning_api
             app.MapAppKitAuth<User, ApplicationDbContext>(configure: o => o.IsActive = u => !u.IsDeleted);
             app.MapAppKitAccount<User>();
             app.MapAppKitSiteSettings<ApplicationDbContext, AppSettings>(configure: o => o.Policy = Policies.Admin);
+            app.MapAppKitLegalPages<ApplicationDbContext>(configure: o =>
+            {
+                o.Locales = [LegalSeedText.Locale];
+                o.Policy = Policies.Admin;
+            });
             app.MapAppKitUserAdmin<User, ApplicationDbContext>(configure: o =>
             {
                 o.Roles = RoleNames.AllRoles;
