@@ -11,15 +11,6 @@ namespace nstuning_api.Features.Admin
         public long DiskFreeBytes { get; set; }
     }
 
-    public class DailyStatDto
-    {
-        public string Date { get; set; } = string.Empty;
-        public int TotalUsers { get; set; }
-        public int PublishedDynoRuns { get; set; }
-        public int DraftDynoRuns { get; set; }
-        public int ContentImages { get; set; }
-    }
-
     public class EmailStatsDto
     {
         public int Days { get; set; }

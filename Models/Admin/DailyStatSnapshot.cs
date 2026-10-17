@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using SjolystInnovation.AppKit.AdminStats;
 
 namespace nstuning_api.Models.Admin
 {
-    public class DailyStatSnapshot
+    public class DailyStatSnapshot : IAppKitDailyStat
     {
         [Key]
         public int Id { get; set; }

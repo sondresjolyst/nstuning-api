@@ -1,11 +1,10 @@
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using nstuning_api.Constants;
+using nstuning_api.Features.Admin;
 using nstuning_api.Infrastructure;
 using nstuning_api.Models;
 using nstuning_api.Models.Admin;
@@ -19,6 +18,8 @@ using SjolystInnovation.AppKit.Auth;
 using SjolystInnovation.AppKit.SiteSettings;
 using SjolystInnovation.AppKit.Hosting;
 using SjolystInnovation.AppKit.Email;
+using SjolystInnovation.AppKit.AdminStats;
+using SjolystInnovation.AppKit.Storage.Images;
 
 namespace nstuning_api
 {
@@ -65,9 +66,9 @@ namespace nstuning_api
             });
             builder.Services.AddAppKitAccounts<User, ApplicationDbContext>(o => o.AdminRole = RoleNames.Admin);
             builder.Services.AddAppKitAuth<ApplicationDbContext>(builder.Configuration.GetSection("Jwt"));
-            builder.Services.AddSingleton<IReportStorageService, ReportStorageService>();
-            builder.Services.AddSingleton<IImageStorageService, ImageStorageService>();
-            builder.Services.AddHostedService<StatsSnapshotService>();
+            builder.Services.AddReportStore(builder.Configuration);
+            builder.Services.AddAppKitContentImages<ApplicationDbContext>(builder.Configuration.GetSection("Storage"));
+            builder.Services.AddAppKitDailyStats<ApplicationDbContext, DailyStatSnapshot>(o => o.LiveSampler = DailyStats.SampleAsync);
 
             builder.Services.AddProblemDetails();
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -129,34 +130,14 @@ namespace nstuning_api
 
             var app = builder.Build();
 
+            app.Logger.LogInformation("Starting API.");
+            await app.Services.MigrateAppKitDatabaseAsync<ApplicationDbContext>(app.Configuration);
+            await app.Services.SeedAppKitRolesAsync(RoleNames.AllRoles);
+            await app.Services.SeedAppKitFirstAdminAsync<User>(app.Configuration, u => new User { FirstName = u.FirstName, LastName = u.LastName });
+
             using (var scope = app.Services.CreateScope())
             {
-                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-                logger.LogInformation("Starting API.");
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-                if (app.Configuration.GetValue("Database:AutoMigrate", true))
-                {
-                    var pendingMigrations = (await context.Database.GetPendingMigrationsAsync()).ToList();
-                    if (pendingMigrations.Count > 0)
-                    {
-                        logger.LogInformation(
-                            "Applying {Count} pending migration(s): {Migrations}",
-                            pendingMigrations.Count,
-                            string.Join(", ", pendingMigrations));
-                        await context.Database.MigrateAsync();
-                    }
-                }
-
-                foreach (var roleName in RoleNames.AllRoles)
-                {
-                    if (!await roleManager.RoleExistsAsync(roleName))
-                        await roleManager.CreateAsync(new IdentityRole(roleName));
-                }
-
-                await app.Services.SeedAppKitFirstAdminAsync<User>(app.Configuration, (email, first, last) => new User { FirstName = first, LastName = last }, RoleNames.Admin);
-
                 if (await context.AppSettings.FindAsync(1) == null)
                 {
                     context.AppSettings.Add(new AppSettings());
@@ -182,16 +163,17 @@ namespace nstuning_api
             app.UseAppKitRateLimiting();
             app.MapControllers();
             app.MapEndpoints();
-            app.MapAppKitAuthEndpoints<User, ApplicationDbContext>(configure: o => o.IsActive = u => !u.IsDeleted);
+            app.MapAppKitAuth<User, ApplicationDbContext>(configure: o => o.IsActive = u => !u.IsDeleted);
             app.MapAppKitAccount<User>();
             app.MapAppKitSiteSettings<ApplicationDbContext, AppSettings>(configure: o => o.Policy = Policies.Admin);
             app.MapAppKitUserAdmin<User, ApplicationDbContext>(configure: o =>
             {
                 o.Roles = RoleNames.AllRoles;
-                o.AdminRole = RoleNames.Admin;
                 o.Policy = Policies.Admin;
-                o.NewUser = (email, first, last) => new User { FirstName = first, LastName = last };
+                o.NewUser = u => new User { FirstName = u.FirstName, LastName = u.LastName };
             });
+            app.MapAppKitContentImages<ApplicationDbContext>("/api/content-images", o => o.Policy = Policies.Admin);
+            app.MapAppKitDailyStats<ApplicationDbContext, DailyStatSnapshot>("/api/admin/stats", o => o.Policy = Policies.Admin);
             app.MapAppKitHealthChecks();
             app.Run();
         }

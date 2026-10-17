@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using nstuning_api.Models.Admin;
 using SjolystInnovation.AppKit.Auth;
+using SjolystInnovation.AppKit.Storage.Images;
 
 namespace nstuning_api.Models
 {
@@ -26,6 +27,7 @@ namespace nstuning_api.Models
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.AddAppKitRefreshTokens<User>();
+            modelBuilder.AddAppKitContentImages();
 
             modelBuilder.Entity<DailyStatSnapshot>()
                 .HasIndex(s => s.Date)
@@ -95,12 +97,6 @@ namespace nstuning_api.Models
                 .WithMany()
                 .HasForeignKey(d => d.CoverImageId)
                 .OnDelete(DeleteBehavior.SetNull);
-
-            modelBuilder.Entity<ContentImageVariant>()
-                .HasOne(v => v.ContentImage)
-                .WithMany(i => i.Variants)
-                .HasForeignKey(v => v.ContentImageId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

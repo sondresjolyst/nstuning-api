@@ -1,19 +1,22 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using nstuning_api.Constants;
 using nstuning_api.Infrastructure;
 using nstuning_api.Models;
 using nstuning_api.Services;
+using SjolystInnovation.AppKit.Storage;
+using SjolystInnovation.AppKit.Storage.Images;
 
 namespace nstuning_api.Features.Admin
 {
-    /// <summary>Admin dashboard: aggregate stats, daily history, roles, Brevo email stats.</summary>
+    /// <summary>Admin dashboard: aggregate stats, roles, Brevo email stats. The daily history is MapAppKitDailyStats.</summary>
     public static class AdminDashboard
     {
-        public static async Task<IResult> GetStats(ApplicationDbContext db, IConfiguration config, ILoggerFactory loggerFactory, CancellationToken ct)
+        public static async Task<IResult> GetStats(ApplicationDbContext db, IOptions<AppKitContentImagesOptions> images,
+            IOptionsMonitor<AppKitFileStoreOptions> stores, ILoggerFactory loggerFactory, CancellationToken ct)
         {
-            var options = config.GetSection("Storage").Get<StorageOptions>() ?? new StorageOptions();
-            var imagesPath = Path.GetFullPath(options.ImagesPath);
-            var reportsPath = Path.GetFullPath(options.ReportsPath);
+            var imagesPath = Path.GetFullPath(images.Value.ImagesPath);
+            var reportsPath = Path.GetFullPath(stores.Get(ReportStore.Name).Path);
 
             long diskTotal = 0, diskFree = 0;
             try
@@ -37,20 +40,6 @@ namespace nstuning_api.Features.Admin
                 DiskTotalBytes = diskTotal,
                 DiskFreeBytes = diskFree
             });
-        }
-
-        public static async Task<IResult> GetStatsHistory(ApplicationDbContext db, CancellationToken ct)
-        {
-            var snapshots = await StatsSnapshotService.GetHistoryAsync(db, ct);
-            var result = snapshots.Select(s => new DailyStatDto
-            {
-                Date = s.Date.ToString("yyyy-MM-dd"),
-                TotalUsers = s.TotalUsers,
-                PublishedDynoRuns = s.PublishedDynoRuns,
-                DraftDynoRuns = s.DraftDynoRuns,
-                ContentImages = s.ContentImages
-            }).ToList();
-            return TypedResults.Ok(result);
         }
 
         public static IResult GetRoles() => TypedResults.Ok(RoleNames.AllRoles);
@@ -80,7 +69,6 @@ namespace nstuning_api.Features.Admin
             {
                 var group = app.MapGroup("/api/admin").RequireAuthorization(Policies.Admin);
                 group.MapGet("stats", GetStats);
-                group.MapGet("stats/history", GetStatsHistory);
                 group.MapGet("roles", GetRoles);
                 group.MapGet("email-stats", GetEmailStats);
             }
