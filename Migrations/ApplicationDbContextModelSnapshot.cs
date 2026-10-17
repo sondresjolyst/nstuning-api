@@ -225,6 +225,39 @@ namespace nstuning_api.Migrations
                     b.ToTable("LegalPages", (string)null);
                 });
 
+            modelBuilder.Entity("SjolystInnovation.AppKit.SiteSettings.PageSections", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<string>("Locale")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<string>("SectionsJson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Key", "Locale")
+                        .IsUnique();
+
+                    b.ToTable("PageSections", (string)null);
+                });
+
             modelBuilder.Entity("SjolystInnovation.AppKit.Storage.Images.ContentImage", b =>
                 {
                     b.Property<string>("Id")
