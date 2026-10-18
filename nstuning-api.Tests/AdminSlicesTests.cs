@@ -36,10 +36,10 @@ public class AdminSlicesTests : TestBase
         await File.WriteAllBytesAsync(Path.Combine(storage.ImagesPath, "a.png"), new byte[23], TestContext.Current.CancellationToken);
 
         var ok = Assert.IsType<Ok<AdminStatsDto>>(await AdminDashboard.GetStats(db,
-            storage.Services.GetRequiredService<IOptions<AppKitContentImagesOptions>>(),
-            storage.Services.GetRequiredService<IOptionsMonitor<AppKitFileStoreOptions>>(),
-            NullLoggerFactory.Instance, default));
+            storage.Services.GetRequiredService<IAppKitStorageUsage>(), default));
         Assert.Equal(123, ok.Value!.StorageUsedBytes);
+        Assert.True(ok.Value.DiskTotalBytes > 0);
+        Assert.InRange(ok.Value.DiskFreeBytes, 1, ok.Value.DiskTotalBytes);
         Assert.Equal(2, ok.Value!.TotalUsers);
         Assert.Equal(2, ok.Value.PublishedDynoRuns);
         Assert.Equal(1, ok.Value.DraftDynoRuns);
@@ -85,28 +85,18 @@ public class AdminSlicesTests : TestBase
     }
 
     [Fact]
-    public void GetRoles_ReturnsAllRoles()
+    public async Task GetStats_PassesTheContentImagesAndReportStoresAndCopiesTheUsage()
     {
-        var ok = Assert.IsType<Ok<string[]>>(AdminDashboard.GetRoles());
-        Assert.Contains("Admin", ok.Value!);
-        Assert.Contains("Default", ok.Value!);
-    }
+        await using var db = CreateDbContext();
+        var usage = new Mock<IAppKitStorageUsage>();
+        usage.Setup(u => u.GetAsync(It.IsAny<IEnumerable<string>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new AppKitStorageUsage(73400320, 10737418240, 8589934592));
 
-    [Fact]
-    public async Task GetEmailStats_ReturnsStats()
-    {
-        var email = new Mock<IEmailService>();
-        email.Setup(e => e.GetEmailStatsAsync(30)).ReturnsAsync(new EmailStatsDto { Days = 30, Requests = 5 });
-        var ok = Assert.IsType<Ok<EmailStatsDto>>(await AdminDashboard.GetEmailStats(email.Object, NullLoggerFactory.Instance, 30));
-        Assert.Equal(5, ok.Value!.Requests);
-    }
+        var ok = Assert.IsType<Ok<AdminStatsDto>>(await AdminDashboard.GetStats(db, usage.Object, default));
 
-    [Fact]
-    public async Task GetEmailStats_BrevoFailure_Returns502()
-    {
-        var email = new Mock<IEmailService>();
-        email.Setup(e => e.GetEmailStatsAsync(It.IsAny<int>())).ThrowsAsync(new Exception("brevo down"));
-        var problem = Assert.IsType<ProblemHttpResult>(await AdminDashboard.GetEmailStats(email.Object, NullLoggerFactory.Instance, 30));
-        Assert.Equal(StatusCodes.Status502BadGateway, problem.StatusCode);
+        usage.Verify(u => u.GetAsync(It.Is<IEnumerable<string>>(n => n.SequenceEqual(new[] { AppKitContentImages.StoreName, ReportStore.Name })), It.IsAny<CancellationToken>()));
+        Assert.Equal(73400320, ok.Value!.StorageUsedBytes);
+        Assert.Equal(10737418240, ok.Value.DiskTotalBytes);
+        Assert.Equal(8589934592, ok.Value.DiskFreeBytes);
     }
 }

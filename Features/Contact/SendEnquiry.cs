@@ -3,7 +3,7 @@ using FluentValidation;
 using nstuning_api.Infrastructure;
 using nstuning_api.Models;
 using nstuning_api.Models.Admin;
-using nstuning_api.Services;
+using SjolystInnovation.AppKit.Email;
 
 namespace nstuning_api.Features.Contact
 {
@@ -24,15 +24,13 @@ namespace nstuning_api.Features.Contact
     /// <summary>Sends a contact / booking enquiry to the configured recipient.</summary>
     public static class SendEnquiry
     {
-        public static async Task<IResult> Handle(ContactRequest req, ApplicationDbContext db, IEmailService email, CancellationToken ct)
+        public static async Task<IResult> Handle(ContactRequest req, ApplicationDbContext db, IEmailSender email, CancellationToken ct)
         {
             var settings = await db.AppSettings.FindAsync([1], ct) ?? new AppSettings();
 
-            await email.SendEmailAsync(
-                settings.ContactRecipientEmail,
-                $"New enquiry from {req.Name}",
-                BuildBody(req),
-                replyTo: req.Email);
+            await email.SendAsync(
+                new EmailMessage(settings.ContactRecipientEmail, $"New enquiry from {req.Name}", BuildBody(req)) { ReplyTo = req.Email },
+                ct);
 
             return TypedResults.Ok(new MessageResponse("Thanks — we'll be in touch."));
         }
