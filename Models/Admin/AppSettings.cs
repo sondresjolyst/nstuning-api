@@ -48,8 +48,6 @@ namespace nstuning_api.Models.Admin
         [MaxLength(40)]
         public string PublicPhone { get; set; } = "";
 
-        public string? HomePageJson { get; set; }
-
         public string? LogoData { get; set; }
 
         [MaxLength(50)]
