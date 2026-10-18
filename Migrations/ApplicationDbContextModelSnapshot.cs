@@ -362,9 +362,6 @@ namespace nstuning_api.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<string>("HomePageJson")
-                        .HasColumnType("text");
-
                     b.Property<string>("IconContentType")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
