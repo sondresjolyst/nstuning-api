@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.8.0...v1.9.0) (2026-10-18)
+
+
+### Features
+
+* **email:** tag Brevo emails with the app name ([#204](https://github.com/sondresjolyst/nstuning-api/issues/204)) ([e9ff051](https://github.com/sondresjolyst/nstuning-api/commit/e9ff05129410684c8e980ae81e3f383b9fe5c751))
+
 ## [1.8.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.7.2...v1.8.0) (2026-10-18)
 
 
