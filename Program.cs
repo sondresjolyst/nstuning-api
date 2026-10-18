@@ -161,6 +161,7 @@ namespace nstuning_api
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseAppKitRateLimiting();
+            app.UseAppKitBadRequests();
             app.MapControllers();
             app.MapEndpoints();
             app.MapAppKitAuth<User, ApplicationDbContext>(configure: o => o.IsActive = u => !u.IsDeleted);
