@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.10.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.9.0...v1.10.0) (2026-10-20)
+
+
+### Features
+
+* **legal:** keep every saved version of the legal pages through AppKit.SiteSettings 1.1.0 ([#207](https://github.com/sondresjolyst/nstuning-api/issues/207)) ([5af7fd0](https://github.com/sondresjolyst/nstuning-api/commit/5af7fd073181dad12f47be938ae6ab5da8076100))
+
+
+### Dependencies
+
+* **nuget:** bump `SjolystInnovation.AppKit.Hosting` from 1.0.1 to 1.0.3 ([#203](https://github.com/sondresjolyst/nstuning-api/issues/203)) ([2ad2fcf](https://github.com/sondresjolyst/nstuning-api/commit/2ad2fcf5b418794f7b9a247cc05889fdacde246f))
+
 ## [1.9.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.8.0...v1.9.0) (2026-10-18)
 
 
