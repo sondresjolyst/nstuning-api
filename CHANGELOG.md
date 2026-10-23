@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/sondresjolyst/nstuning-api/compare/v1.11.0...v1.11.1) (2026-10-23)
+
+
+### Bug Fixes
+
+* **contact:** check the enquiry address with AppKit.Email ([#209](https://github.com/sondresjolyst/nstuning-api/issues/209)) ([9f7935f](https://github.com/sondresjolyst/nstuning-api/commit/9f7935f29dea3c6798ae061f39278c1d93819cf3))
+
 ## [1.11.0](https://github.com/sondresjolyst/nstuning-api/compare/v1.10.0...v1.11.0) (2026-10-20)
 
 
