@@ -43,4 +43,31 @@ public class ContactSliceTests : TestBase
 
         email.Verify(e => e.SendAsync(It.Is<EmailMessage>(m => m.To == "sonyslyst@gmail.com" && m.ReplyTo == "kari@kunde.no"), It.IsAny<CancellationToken>()), Times.Once);
     }
+
+    [Theory]
+    [InlineData("ola@kunde.no", true)]
+    [InlineData("  ola@kunde.no  ", true)]
+    [InlineData("ola@kunde.no, evil@x.no", false)]
+    [InlineData("ola@kunde.no;evil@x.no", false)]
+    [InlineData("Ola <ola@kunde.no>", false)]
+    [InlineData("ola@kunde.no\r\nBcc: evil@x.no", false)]
+    [InlineData("ola@kunde.no\nBcc: evil@x.no", false)]
+    [InlineData("ola@kunde.no\rBcc: evil@x.no", false)]
+    public void Validator_AcceptsOnlyASingleAddress(string email, bool valid)
+    {
+        var result = new ContactRequestValidator().Validate(new ContactRequest("Ola", email, null, null, "Hei"));
+
+        Assert.Equal(valid, result.IsValid);
+    }
+
+    [Fact]
+    public async Task Send_UsesTrimmedAddressAsReplyTo()
+    {
+        await using var db = CreateDbContext();
+        var email = new Mock<IEmailSender>();
+
+        await SendEnquiry.Handle(new ContactRequest("Ola", "  ola@kunde.no ", null, null, "Hei"), db, email.Object, default);
+
+        email.Verify(e => e.SendAsync(It.Is<EmailMessage>(m => m.ReplyTo == "ola@kunde.no"), It.IsAny<CancellationToken>()), Times.Once);
+    }
 }

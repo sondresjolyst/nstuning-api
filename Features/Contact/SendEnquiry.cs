@@ -14,7 +14,7 @@ namespace nstuning_api.Features.Contact
         public ContactRequestValidator()
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(120);
-            RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(200);
+            RuleFor(x => x.Email).NotEmpty().MaximumLength(200).Must(EmailAddress.IsSingle).WithMessage("'Email' must be a single email address.");
             RuleFor(x => x.Phone).MaximumLength(30);
             RuleFor(x => x.Car).MaximumLength(160);
             RuleFor(x => x.Message).NotEmpty().MaximumLength(4000);
@@ -29,7 +29,7 @@ namespace nstuning_api.Features.Contact
             var settings = await db.AppSettings.FindAsync([1], ct) ?? new AppSettings();
 
             await email.SendAsync(
-                new EmailMessage(settings.ContactRecipientEmail, $"New enquiry from {req.Name}", BuildBody(req)) { ReplyTo = req.Email },
+                new EmailMessage(settings.ContactRecipientEmail, $"New enquiry from {req.Name}", BuildBody(req)) { ReplyTo = req.Email.Trim() },
                 ct);
 
             return TypedResults.Ok(new MessageResponse("Thanks — we'll be in touch."));
