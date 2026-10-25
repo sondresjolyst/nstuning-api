@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.11.2](https://github.com/sondresjolyst/nstuning-api/compare/v1.11.1...v1.11.2) (2026-10-25)
+
+
+### Bug Fixes
+
+* **email:** show the public email in the auth email footer ([#218](https://github.com/sondresjolyst/nstuning-api/issues/218)) ([309050c](https://github.com/sondresjolyst/nstuning-api/commit/309050c3d07628f88c41557096b0d6268ccb97b7)), closes [#217](https://github.com/sondresjolyst/nstuning-api/issues/217)
+
+
+### Dependencies
+
+* **nuget:** bump `Microsoft.Extensions.Logging.Abstractions` from 10.0.12 to 10.0.13 ([#213](https://github.com/sondresjolyst/nstuning-api/issues/213)) ([c9c4993](https://github.com/sondresjolyst/nstuning-api/commit/c9c4993f3fd3d7c5d1c418d3ce0381774b5a3629))
+* **nuget:** Bump Microsoft.AspNetCore.Identity.EntityFrameworkCore and 7 others ([#212](https://github.com/sondresjolyst/nstuning-api/issues/212)) ([fa09bbb](https://github.com/sondresjolyst/nstuning-api/commit/fa09bbb8bf5230a61786c66e49e28d1ad4c735b4))
+
 ## [1.11.1](https://github.com/sondresjolyst/nstuning-api/compare/v1.11.0...v1.11.1) (2026-10-23)
 
 
