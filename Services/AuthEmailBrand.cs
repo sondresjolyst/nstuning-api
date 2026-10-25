@@ -16,7 +16,7 @@ namespace nstuning_api.Services
                 OrgNumber = s.OrgNumber,
                 VatRegistered = s.VatRegistered,
                 Address = s.FormattedAddress,
-                Email = null,
+                Email = s.PublicEmail,
             };
         }
     }

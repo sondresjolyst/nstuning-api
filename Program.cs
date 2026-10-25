@@ -59,6 +59,7 @@ namespace nstuning_api
             builder.Services.AddScoped<IEmailBrand, AuthEmailBrand>();
             builder.Services.AddAppKitAuthEmails<User>(o =>
             {
+                o.Language = EmailLanguage.Norwegian;
                 o.HeaderColor = "#ffd400";
                 o.AccentColor = "#ffd400";
                 o.SetPasswordUrl = $"{builder.Configuration["Site:BaseUrl"]?.TrimEnd('/')}/reset-password";

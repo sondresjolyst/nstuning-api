@@ -10,7 +10,7 @@ public class AuthEmailBrandTests : TestBase
     public async Task GetBrandAsync_PassesTheRawOrgNumberAndVatFlag()
     {
         await using var db = CreateDbContext();
-        db.AppSettings.Add(new AppSettings { CompanyName = "NS Tuning", CompanyLegalName = "Nordmark Service", OrgNumber = "923202374", VatRegistered = true });
+        db.AppSettings.Add(new AppSettings { CompanyName = "NS Tuning", CompanyLegalName = "Nordmark Service", OrgNumber = "923202374", VatRegistered = true, PublicEmail = "post@example.com" });
         await db.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var brand = await new AuthEmailBrand(db).GetBrandAsync(TestContext.Current.CancellationToken);
@@ -20,7 +20,7 @@ public class AuthEmailBrandTests : TestBase
         Assert.Equal("923202374", brand.OrgNumber);
         Assert.True(brand.VatRegistered);
         Assert.Equal("Håbakken 7, 4355 Kvernaland", brand.Address);
-        Assert.Null(brand.Email);
+        Assert.Equal("post@example.com", brand.Email);
     }
 
     [Fact]
