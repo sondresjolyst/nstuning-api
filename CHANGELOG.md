@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.11.3](https://github.com/sondresjolyst/nstuning-api/compare/v1.11.2...v1.11.3) (2026-11-08)
+
+
+### Dependencies
+
+* **docker:** update mcr.microsoft.com/dotnet/aspnet to 1a48394 ([aa92757](https://github.com/sondresjolyst/nstuning-api/commit/aa92757a1c77fea6931297c96d162ba5bfb74f18))
+* **docker:** update mcr.microsoft.com/dotnet/sdk to 212fe4c ([aa92757](https://github.com/sondresjolyst/nstuning-api/commit/aa92757a1c77fea6931297c96d162ba5bfb74f18))
+* **nuget:** update Microsoft.AspNetCore.Identity.EntityFrameworkCore from 10.0.13 to 10.0.14 ([b11eb2a](https://github.com/sondresjolyst/nstuning-api/commit/b11eb2af11f583aee0f6fd8b32e31cda986d2a57))
+* **nuget:** update Microsoft.AspNetCore.Mvc.Testing from 10.0.13 to 10.0.14 ([b11eb2a](https://github.com/sondresjolyst/nstuning-api/commit/b11eb2af11f583aee0f6fd8b32e31cda986d2a57))
+* **nuget:** update Microsoft.AspNetCore.OpenApi from 10.0.13 to 10.0.14 ([b11eb2a](https://github.com/sondresjolyst/nstuning-api/commit/b11eb2af11f583aee0f6fd8b32e31cda986d2a57))
+* **nuget:** update Microsoft.EntityFrameworkCore from 10.0.13 to 10.0.14 ([b11eb2a](https://github.com/sondresjolyst/nstuning-api/commit/b11eb2af11f583aee0f6fd8b32e31cda986d2a57))
+* **nuget:** update Microsoft.EntityFrameworkCore.Design from 10.0.13 to 10.0.14 ([b11eb2a](https://github.com/sondresjolyst/nstuning-api/commit/b11eb2af11f583aee0f6fd8b32e31cda986d2a57))
+* **nuget:** update Microsoft.EntityFrameworkCore.InMemory from 10.0.13 to 10.0.14 ([b11eb2a](https://github.com/sondresjolyst/nstuning-api/commit/b11eb2af11f583aee0f6fd8b32e31cda986d2a57))
+* **nuget:** update Microsoft.EntityFrameworkCore.Tools from 10.0.13 to 10.0.14 ([b11eb2a](https://github.com/sondresjolyst/nstuning-api/commit/b11eb2af11f583aee0f6fd8b32e31cda986d2a57))
+* **nuget:** update Microsoft.Extensions.Logging.Abstractions from 10.0.13 to 10.0.14 ([b11eb2a](https://github.com/sondresjolyst/nstuning-api/commit/b11eb2af11f583aee0f6fd8b32e31cda986d2a57))
+* **nuget:** update SjolystInnovation.AppKit.SiteSettings from 1.1.1 to 1.2.0 ([b2a7604](https://github.com/sondresjolyst/nstuning-api/commit/b2a7604f2d70ad8b7beae70ef0d8b98c381839ae))
+* **nuget:** update Swashbuckle.AspNetCore from 10.3.0 to 10.3.1 ([b11eb2a](https://github.com/sondresjolyst/nstuning-api/commit/b11eb2af11f583aee0f6fd8b32e31cda986d2a57))
+* **nuget:** update Swashbuckle.AspNetCore.Annotations from 10.3.0 to 10.3.1 ([b11eb2a](https://github.com/sondresjolyst/nstuning-api/commit/b11eb2af11f583aee0f6fd8b32e31cda986d2a57))
+
 ## [1.11.2](https://github.com/sondresjolyst/nstuning-api/compare/v1.11.1...v1.11.2) (2026-10-25)
 
 
