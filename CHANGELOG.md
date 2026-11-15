@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.11.4](https://github.com/sondresjolyst/nstuning-api/compare/v1.11.3...v1.11.4) (2026-11-15)
+
+
+### Dependencies
+
+* **docker:** update mcr.microsoft.com/dotnet/aspnet from 1a48394 to bfd912c ([be5b5a7](https://github.com/sondresjolyst/nstuning-api/commit/be5b5a75b14688b23b4e1948b6232d56eaf5fe6e))
+* **docker:** update mcr.microsoft.com/dotnet/sdk from 212fe4c to fe0fd4e ([be5b5a7](https://github.com/sondresjolyst/nstuning-api/commit/be5b5a75b14688b23b4e1948b6232d56eaf5fe6e))
+* **nuget:** update Mapster from 10.0.13 to 10.0.14 ([fd5c97c](https://github.com/sondresjolyst/nstuning-api/commit/fd5c97c413687ffd18ddd88eebef9b2a205a7d8d))
+* **nuget:** update Mapster.DependencyInjection from 10.0.13 to 10.0.14 ([fd5c97c](https://github.com/sondresjolyst/nstuning-api/commit/fd5c97c413687ffd18ddd88eebef9b2a205a7d8d))
+
 ## [1.11.3](https://github.com/sondresjolyst/nstuning-api/compare/v1.11.2...v1.11.3) (2026-11-08)
 
 
