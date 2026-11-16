@@ -3,7 +3,7 @@ WORKDIR /app
 EXPOSE 7297
 USER app
 
-FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:fe0fd4e93bd2fbb47c883b7a6369e5c8d3db8bf01cdc5981f6ee35fbdf3ff4fb AS build
+FROM mcr.microsoft.com/dotnet/sdk:11.0@sha256:65f3c7c6a25a239ab3e6719f2896147e7b68242ff2d8818dd70498bde6ef8bea AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["nstuning-api.csproj", "."]
