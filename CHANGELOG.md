@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.11.5](https://github.com/sondresjolyst/nstuning-api/compare/v1.11.4...v1.11.5) (2026-11-22)
+
+
+### Dependencies
+
+* **docker:** update mcr.microsoft.com/dotnet/aspnet from bfd912c to 12b1135 ([bfeb6ba](https://github.com/sondresjolyst/nstuning-api/commit/bfeb6ba7e5e78b10acb5506eff65a737432ae542))
+* **docker:** update mcr.microsoft.com/dotnet/sdk from fe0fd4e to bef136a ([bfeb6ba](https://github.com/sondresjolyst/nstuning-api/commit/bfeb6ba7e5e78b10acb5506eff65a737432ae542))
+* **dotnet:** upgrade to .net 11 ([#245](https://github.com/sondresjolyst/nstuning-api/issues/245)) ([5566507](https://github.com/sondresjolyst/nstuning-api/commit/55665079a89ffdcf1785b4c7111ee4b79700221a))
+* **nuget:** update Microsoft.AspNetCore.Identity.EntityFrameworkCore from 10.0.14 to 10.0.15 ([3929030](https://github.com/sondresjolyst/nstuning-api/commit/3929030917921878f128c4b848431fb6de8e74e4))
+* **nuget:** update Microsoft.AspNetCore.Mvc.Testing from 10.0.14 to 10.0.15 ([3929030](https://github.com/sondresjolyst/nstuning-api/commit/3929030917921878f128c4b848431fb6de8e74e4))
+* **nuget:** update Microsoft.AspNetCore.OpenApi from 10.0.14 to 10.0.15 ([3929030](https://github.com/sondresjolyst/nstuning-api/commit/3929030917921878f128c4b848431fb6de8e74e4))
+* **nuget:** update Microsoft.EntityFrameworkCore from 10.0.14 to 10.0.15 ([3929030](https://github.com/sondresjolyst/nstuning-api/commit/3929030917921878f128c4b848431fb6de8e74e4))
+* **nuget:** update Microsoft.EntityFrameworkCore.Design from 10.0.14 to 10.0.15 ([3929030](https://github.com/sondresjolyst/nstuning-api/commit/3929030917921878f128c4b848431fb6de8e74e4))
+* **nuget:** update Microsoft.EntityFrameworkCore.InMemory from 10.0.14 to 10.0.15 ([3929030](https://github.com/sondresjolyst/nstuning-api/commit/3929030917921878f128c4b848431fb6de8e74e4))
+* **nuget:** update Microsoft.EntityFrameworkCore.Tools from 10.0.14 to 10.0.15 ([3929030](https://github.com/sondresjolyst/nstuning-api/commit/3929030917921878f128c4b848431fb6de8e74e4))
+* **nuget:** update Microsoft.Extensions.Logging.Abstractions from 10.0.14 to 10.0.15 ([3929030](https://github.com/sondresjolyst/nstuning-api/commit/3929030917921878f128c4b848431fb6de8e74e4))
+* **nuget:** update Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 ([3929030](https://github.com/sondresjolyst/nstuning-api/commit/3929030917921878f128c4b848431fb6de8e74e4))
+* **nuget:** update SjolystInnovation.AppKit.AdminStats from 1.0.1 to 1.0.2 ([388d0b1](https://github.com/sondresjolyst/nstuning-api/commit/388d0b19341afe586acce0ac21baa3abd4eb9025))
+* **nuget:** update SjolystInnovation.AppKit.Auth from 1.1.1 to 1.1.2 ([388d0b1](https://github.com/sondresjolyst/nstuning-api/commit/388d0b19341afe586acce0ac21baa3abd4eb9025))
+* **nuget:** update SjolystInnovation.AppKit.Hosting from 1.1.1 to 1.1.2 ([388d0b1](https://github.com/sondresjolyst/nstuning-api/commit/388d0b19341afe586acce0ac21baa3abd4eb9025))
+* **nuget:** update SjolystInnovation.AppKit.SiteSettings from 1.2.0 to 1.2.1 ([388d0b1](https://github.com/sondresjolyst/nstuning-api/commit/388d0b19341afe586acce0ac21baa3abd4eb9025))
+* **nuget:** update SjolystInnovation.AppKit.Storage.Images from 1.0.1 to 1.0.2 ([388d0b1](https://github.com/sondresjolyst/nstuning-api/commit/388d0b19341afe586acce0ac21baa3abd4eb9025))
+* **nuget:** update xunit.v3 from 4.0.2 to 4.0.3 ([3929030](https://github.com/sondresjolyst/nstuning-api/commit/3929030917921878f128c4b848431fb6de8e74e4))
+
 ## [1.11.4](https://github.com/sondresjolyst/nstuning-api/compare/v1.11.3...v1.11.4) (2026-11-15)
 
 
